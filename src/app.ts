@@ -5,7 +5,6 @@ import express, { Application, Request, Response } from "express";
 import path from "path";
 import qs from "qs";
 import { auth } from "./lib/auth";
-import authRouter from "./app/modules/auth/user.router";
 import movieRouter from "./app/modules/movie/movie.route";
 
 const app: Application = express();
@@ -14,11 +13,6 @@ app.set("query parser", (str: string) => qs.parse(str));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 
-// app.post(
-//   "/webhook",
-//   express.raw({ type: "application/json" }),
-//   PaymentController.handleStripeWebhookEvent,
-// );
 
 app.use(cookieParser());
 app.use(
@@ -57,7 +51,7 @@ app.use("/api/movie", movieRouter);
 app.get("/", async (req: Request, res: Response) => {
   res.status(201).json({
     success: true,
-    message: "API is working",
+    message: "Movie Server Is Running",
   });
 });
 

@@ -68,6 +68,10 @@ export const JsonNull = runtime.JsonNull;
 export const AnyNull = runtime.AnyNull;
 export const ModelName = {
     User: 'User',
+    Movie: 'Movie',
+    Review: 'Review',
+    Watchlist: 'Watchlist',
+    Purchase: 'Purchase',
     Session: 'Session',
     Account: 'Account',
     Verification: 'Verification'
@@ -85,10 +89,63 @@ export const UserScalarFieldEnum = {
     id: 'id',
     name: 'name',
     email: 'email',
+    password: 'password',
+    role: 'role',
+    contentStatus: 'contentStatus',
     emailVerified: 'emailVerified',
+    isBlocked: 'isBlocked',
     image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const MovieScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    director: 'director',
+    cast: 'cast',
+    year: 'year',
+    duration: 'duration',
+    rating: 'rating',
+    genres: 'genres',
+    posterUrl: 'posterUrl',
+    backdropUrl: 'backdropUrl',
+    trailerUrl: 'trailerUrl',
+    streamingUrl: 'streamingUrl',
+    platform: 'platform',
+    status: 'status',
+    price: 'price',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    isPublished: 'isPublished',
+    isTrending: 'isTrending'
+};
+export const ReviewScalarFieldEnum = {
+    id: 'id',
+    rating: 'rating',
+    comment: 'comment',
+    isSpoiler: 'isSpoiler',
+    isApproved: 'isApproved',
+    likes: 'likes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    userId: 'userId',
+    movieId: 'movieId',
+    parentId: 'parentId'
+};
+export const WatchlistScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    movieId: 'movieId'
+};
+export const PurchaseScalarFieldEnum = {
+    id: 'id',
+    transactionId: 'transactionId',
+    paymentStatus: 'paymentStatus',
+    userId: 'userId',
+    movieId: 'movieId',
+    amount: 'amount',
+    createdAt: 'createdAt'
 };
 export const SessionScalarFieldEnum = {
     id: 'id',

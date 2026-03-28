@@ -1,4 +1,5 @@
 import type * as runtime from "@prisma/client/runtime/client";
+import type * as $Enums from "../enums";
 import type * as Prisma from "../internal/prismaNamespace";
 /**
  * Model User
@@ -14,7 +15,11 @@ export type UserMinAggregateOutputType = {
     id: string | null;
     name: string | null;
     email: string | null;
+    password: string | null;
+    role: $Enums.Role | null;
+    contentStatus: $Enums.ContentStatus | null;
     emailVerified: boolean | null;
+    isBlocked: boolean | null;
     image: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -23,7 +28,11 @@ export type UserMaxAggregateOutputType = {
     id: string | null;
     name: string | null;
     email: string | null;
+    password: string | null;
+    role: $Enums.Role | null;
+    contentStatus: $Enums.ContentStatus | null;
     emailVerified: boolean | null;
+    isBlocked: boolean | null;
     image: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
@@ -32,7 +41,11 @@ export type UserCountAggregateOutputType = {
     id: number;
     name: number;
     email: number;
+    password: number;
+    role: number;
+    contentStatus: number;
     emailVerified: number;
+    isBlocked: number;
     image: number;
     createdAt: number;
     updatedAt: number;
@@ -42,7 +55,11 @@ export type UserMinAggregateInputType = {
     id?: true;
     name?: true;
     email?: true;
+    password?: true;
+    role?: true;
+    contentStatus?: true;
     emailVerified?: true;
+    isBlocked?: true;
     image?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -51,7 +68,11 @@ export type UserMaxAggregateInputType = {
     id?: true;
     name?: true;
     email?: true;
+    password?: true;
+    role?: true;
+    contentStatus?: true;
     emailVerified?: true;
+    isBlocked?: true;
     image?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -60,7 +81,11 @@ export type UserCountAggregateInputType = {
     id?: true;
     name?: true;
     email?: true;
+    password?: true;
+    role?: true;
+    contentStatus?: true;
     emailVerified?: true;
+    isBlocked?: true;
     image?: true;
     createdAt?: true;
     updatedAt?: true;
@@ -132,7 +157,11 @@ export type UserGroupByOutputType = {
     id: string;
     name: string;
     email: string;
+    password: string | null;
+    role: $Enums.Role;
+    contentStatus: $Enums.ContentStatus;
     emailVerified: boolean;
+    isBlocked: boolean;
     image: string | null;
     createdAt: Date;
     updatedAt: Date;
@@ -150,23 +179,37 @@ export type UserWhereInput = {
     id?: Prisma.StringFilter<"User"> | string;
     name?: Prisma.StringFilter<"User"> | string;
     email?: Prisma.StringFilter<"User"> | string;
+    password?: Prisma.StringNullableFilter<"User"> | string | null;
+    role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFilter<"User"> | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    isBlocked?: Prisma.BoolFilter<"User"> | boolean;
     image?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     sessions?: Prisma.SessionListRelationFilter;
     accounts?: Prisma.AccountListRelationFilter;
+    reviews?: Prisma.ReviewListRelationFilter;
+    purchases?: Prisma.PurchaseListRelationFilter;
+    watchlist?: Prisma.WatchlistListRelationFilter;
 };
 export type UserOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
+    password?: Prisma.SortOrderInput | Prisma.SortOrder;
+    role?: Prisma.SortOrder;
+    contentStatus?: Prisma.SortOrder;
     emailVerified?: Prisma.SortOrder;
+    isBlocked?: Prisma.SortOrder;
     image?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     sessions?: Prisma.SessionOrderByRelationAggregateInput;
     accounts?: Prisma.AccountOrderByRelationAggregateInput;
+    reviews?: Prisma.ReviewOrderByRelationAggregateInput;
+    purchases?: Prisma.PurchaseOrderByRelationAggregateInput;
+    watchlist?: Prisma.WatchlistOrderByRelationAggregateInput;
 };
 export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -175,18 +218,29 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     OR?: Prisma.UserWhereInput[];
     NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[];
     name?: Prisma.StringFilter<"User"> | string;
+    password?: Prisma.StringNullableFilter<"User"> | string | null;
+    role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFilter<"User"> | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFilter<"User"> | boolean;
+    isBlocked?: Prisma.BoolFilter<"User"> | boolean;
     image?: Prisma.StringNullableFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string;
     sessions?: Prisma.SessionListRelationFilter;
     accounts?: Prisma.AccountListRelationFilter;
+    reviews?: Prisma.ReviewListRelationFilter;
+    purchases?: Prisma.PurchaseListRelationFilter;
+    watchlist?: Prisma.WatchlistListRelationFilter;
 }, "id" | "email">;
 export type UserOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
+    password?: Prisma.SortOrderInput | Prisma.SortOrder;
+    role?: Prisma.SortOrder;
+    contentStatus?: Prisma.SortOrder;
     emailVerified?: Prisma.SortOrder;
+    isBlocked?: Prisma.SortOrder;
     image?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -201,7 +255,11 @@ export type UserScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"User"> | string;
     name?: Prisma.StringWithAggregatesFilter<"User"> | string;
     email?: Prisma.StringWithAggregatesFilter<"User"> | string;
+    password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusWithAggregatesFilter<"User"> | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
+    isBlocked?: Prisma.BoolWithAggregatesFilter<"User"> | boolean;
     image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
@@ -210,51 +268,83 @@ export type UserCreateInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
@@ -263,7 +353,11 @@ export type UserUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -272,7 +366,11 @@ export type UserUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -281,7 +379,11 @@ export type UserCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
+    contentStatus?: Prisma.SortOrder;
     emailVerified?: Prisma.SortOrder;
+    isBlocked?: Prisma.SortOrder;
     image?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -290,7 +392,11 @@ export type UserMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
+    contentStatus?: Prisma.SortOrder;
     emailVerified?: Prisma.SortOrder;
+    isBlocked?: Prisma.SortOrder;
     image?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -299,7 +405,11 @@ export type UserMinOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     email?: Prisma.SortOrder;
+    password?: Prisma.SortOrder;
+    role?: Prisma.SortOrder;
+    contentStatus?: Prisma.SortOrder;
     emailVerified?: Prisma.SortOrder;
+    isBlocked?: Prisma.SortOrder;
     image?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
@@ -311,14 +421,56 @@ export type UserScalarRelationFilter = {
 export type StringFieldUpdateOperationsInput = {
     set?: string;
 };
-export type BoolFieldUpdateOperationsInput = {
-    set?: boolean;
-};
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
 };
+export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role;
+};
+export type EnumContentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ContentStatus;
+};
+export type BoolFieldUpdateOperationsInput = {
+    set?: boolean;
+};
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
+};
+export type UserCreateNestedOneWithoutReviewsInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewsInput;
+    upsert?: Prisma.UserUpsertWithoutReviewsInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsInput, Prisma.UserUpdateWithoutReviewsInput>, Prisma.UserUncheckedUpdateWithoutReviewsInput>;
+};
+export type UserCreateNestedOneWithoutWatchlistInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutWatchlistInput, Prisma.UserUncheckedCreateWithoutWatchlistInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutWatchlistInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutWatchlistNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutWatchlistInput, Prisma.UserUncheckedCreateWithoutWatchlistInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutWatchlistInput;
+    upsert?: Prisma.UserUpsertWithoutWatchlistInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWatchlistInput, Prisma.UserUpdateWithoutWatchlistInput>, Prisma.UserUncheckedUpdateWithoutWatchlistInput>;
+};
+export type UserCreateNestedOneWithoutPurchasesInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutPurchasesInput, Prisma.UserUncheckedCreateWithoutPurchasesInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutPurchasesInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutPurchasesNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutPurchasesInput, Prisma.UserUncheckedCreateWithoutPurchasesInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutPurchasesInput;
+    upsert?: Prisma.UserUpsertWithoutPurchasesInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPurchasesInput, Prisma.UserUpdateWithoutPurchasesInput>, Prisma.UserUncheckedUpdateWithoutPurchasesInput>;
 };
 export type UserCreateNestedOneWithoutSessionsInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>;
@@ -344,25 +496,282 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>;
 };
+export type UserCreateWithoutReviewsInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutReviewsInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutReviewsInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>;
+};
+export type UserUpsertWithoutReviewsInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutReviewsInput, Prisma.UserUncheckedCreateWithoutReviewsInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutReviewsInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutReviewsInput, Prisma.UserUncheckedUpdateWithoutReviewsInput>;
+};
+export type UserUpdateWithoutReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutReviewsInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutWatchlistInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutWatchlistInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutWatchlistInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutWatchlistInput, Prisma.UserUncheckedCreateWithoutWatchlistInput>;
+};
+export type UserUpsertWithoutWatchlistInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutWatchlistInput, Prisma.UserUncheckedUpdateWithoutWatchlistInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutWatchlistInput, Prisma.UserUncheckedCreateWithoutWatchlistInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutWatchlistInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutWatchlistInput, Prisma.UserUncheckedUpdateWithoutWatchlistInput>;
+};
+export type UserUpdateWithoutWatchlistInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutWatchlistInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutPurchasesInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutPurchasesInput = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
+    emailVerified?: boolean;
+    isBlocked?: boolean;
+    image?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+    accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutPurchasesInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutPurchasesInput, Prisma.UserUncheckedCreateWithoutPurchasesInput>;
+};
+export type UserUpsertWithoutPurchasesInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutPurchasesInput, Prisma.UserUncheckedUpdateWithoutPurchasesInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutPurchasesInput, Prisma.UserUncheckedCreateWithoutPurchasesInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutPurchasesInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutPurchasesInput, Prisma.UserUncheckedUpdateWithoutPurchasesInput>;
+};
+export type UserUpdateWithoutPurchasesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutPurchasesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+    accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
+};
 export type UserCreateWithoutSessionsInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     accounts?: Prisma.AccountCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSessionsInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutSessionsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -381,41 +790,69 @@ export type UserUpdateWithoutSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutAccountsInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     sessions?: Prisma.SessionCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutAccountsInput = {
     id: string;
     name: string;
     email: string;
+    password?: string | null;
+    role?: $Enums.Role;
+    contentStatus?: $Enums.ContentStatus;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput;
+    reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput;
+    purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutUserInput;
+    watchlist?: Prisma.WatchlistUncheckedCreateNestedManyWithoutUserInput;
 };
 export type UserCreateOrConnectWithoutAccountsInput = {
     where: Prisma.UserWhereUniqueInput;
@@ -434,21 +871,35 @@ export type UserUpdateWithoutAccountsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUpdateManyWithoutUserNestedInput;
 };
 export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    contentStatus?: Prisma.EnumContentStatusFieldUpdateOperationsInput | $Enums.ContentStatus;
     emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isBlocked?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput;
+    reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput;
+    purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
+    watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 /**
  * Count Type UserCountOutputType
@@ -456,10 +907,16 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
 export type UserCountOutputType = {
     sessions: number;
     accounts: number;
+    reviews: number;
+    purchases: number;
+    watchlist: number;
 };
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs;
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs;
+    reviews?: boolean | UserCountOutputTypeCountReviewsArgs;
+    purchases?: boolean | UserCountOutputTypeCountPurchasesArgs;
+    watchlist?: boolean | UserCountOutputTypeCountWatchlistArgs;
 };
 /**
  * UserCountOutputType without action
@@ -482,23 +939,52 @@ export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.E
 export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.AccountWhereInput;
 };
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ReviewWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPurchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PurchaseWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWatchlistArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.WatchlistWhereInput;
+};
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
     email?: boolean;
+    password?: boolean;
+    role?: boolean;
+    contentStatus?: boolean;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
+    reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>;
+    purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>;
+    watchlist?: boolean | Prisma.User$watchlistArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["user"]>;
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     name?: boolean;
     email?: boolean;
+    password?: boolean;
+    role?: boolean;
+    contentStatus?: boolean;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -507,7 +993,11 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
     id?: boolean;
     name?: boolean;
     email?: boolean;
+    password?: boolean;
+    role?: boolean;
+    contentStatus?: boolean;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -516,15 +1006,22 @@ export type UserSelectScalar = {
     id?: boolean;
     name?: boolean;
     email?: boolean;
+    password?: boolean;
+    role?: boolean;
+    contentStatus?: boolean;
     emailVerified?: boolean;
+    isBlocked?: boolean;
     image?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "contentStatus" | "emailVerified" | "isBlocked" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>;
     accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>;
+    reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>;
+    purchases?: boolean | Prisma.User$purchasesArgs<ExtArgs>;
+    watchlist?: boolean | Prisma.User$watchlistArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
@@ -534,12 +1031,19 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     objects: {
         sessions: Prisma.$SessionPayload<ExtArgs>[];
         accounts: Prisma.$AccountPayload<ExtArgs>[];
+        reviews: Prisma.$ReviewPayload<ExtArgs>[];
+        purchases: Prisma.$PurchasePayload<ExtArgs>[];
+        watchlist: Prisma.$WatchlistPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         name: string;
         email: string;
+        password: string | null;
+        role: $Enums.Role;
+        contentStatus: $Enums.ContentStatus;
         emailVerified: boolean;
+        isBlocked: boolean;
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
@@ -874,6 +1378,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     readonly [Symbol.toStringTag]: "PrismaPromise";
     sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    purchases<T extends Prisma.User$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    watchlist<T extends Prisma.User$watchlistArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$watchlistArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -902,7 +1409,11 @@ export interface UserFieldRefs {
     readonly id: Prisma.FieldRef<"User", 'String'>;
     readonly name: Prisma.FieldRef<"User", 'String'>;
     readonly email: Prisma.FieldRef<"User", 'String'>;
+    readonly password: Prisma.FieldRef<"User", 'String'>;
+    readonly role: Prisma.FieldRef<"User", 'Role'>;
+    readonly contentStatus: Prisma.FieldRef<"User", 'ContentStatus'>;
     readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>;
+    readonly isBlocked: Prisma.FieldRef<"User", 'Boolean'>;
     readonly image: Prisma.FieldRef<"User", 'String'>;
     readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>;
@@ -1321,6 +1832,75 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
     take?: number;
     skip?: number;
     distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[];
+};
+/**
+ * User.reviews
+ */
+export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Review
+     */
+    select?: Prisma.ReviewSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Review
+     */
+    omit?: Prisma.ReviewOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ReviewInclude<ExtArgs> | null;
+    where?: Prisma.ReviewWhereInput;
+    orderBy?: Prisma.ReviewOrderByWithRelationInput | Prisma.ReviewOrderByWithRelationInput[];
+    cursor?: Prisma.ReviewWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[];
+};
+/**
+ * User.purchases
+ */
+export type User$purchasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Purchase
+     */
+    select?: Prisma.PurchaseSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Purchase
+     */
+    omit?: Prisma.PurchaseOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.PurchaseInclude<ExtArgs> | null;
+    where?: Prisma.PurchaseWhereInput;
+    orderBy?: Prisma.PurchaseOrderByWithRelationInput | Prisma.PurchaseOrderByWithRelationInput[];
+    cursor?: Prisma.PurchaseWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PurchaseScalarFieldEnum | Prisma.PurchaseScalarFieldEnum[];
+};
+/**
+ * User.watchlist
+ */
+export type User$watchlistArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Watchlist
+     */
+    select?: Prisma.WatchlistSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Watchlist
+     */
+    omit?: Prisma.WatchlistOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.WatchlistInclude<ExtArgs> | null;
+    where?: Prisma.WatchlistWhereInput;
+    orderBy?: Prisma.WatchlistOrderByWithRelationInput | Prisma.WatchlistOrderByWithRelationInput[];
+    cursor?: Prisma.WatchlistWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.WatchlistScalarFieldEnum | Prisma.WatchlistScalarFieldEnum[];
 };
 /**
  * User without action

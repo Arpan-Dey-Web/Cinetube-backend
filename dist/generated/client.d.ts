@@ -27,6 +27,26 @@ export { Prisma };
  */
 export type User = Prisma.UserModel;
 /**
+ * Model Movie
+ *
+ */
+export type Movie = Prisma.MovieModel;
+/**
+ * Model Review
+ *
+ */
+export type Review = Prisma.ReviewModel;
+/**
+ * Model Watchlist
+ *
+ */
+export type Watchlist = Prisma.WatchlistModel;
+/**
+ * Model Purchase
+ *
+ */
+export type Purchase = Prisma.PurchaseModel;
+/**
  * Model Session
  *
  */

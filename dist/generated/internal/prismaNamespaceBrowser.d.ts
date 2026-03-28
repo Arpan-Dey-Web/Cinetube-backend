@@ -27,6 +27,10 @@ export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullCl
 export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
 export declare const ModelName: {
     readonly User: "User";
+    readonly Movie: "Movie";
+    readonly Review: "Review";
+    readonly Watchlist: "Watchlist";
+    readonly Purchase: "Purchase";
     readonly Session: "Session";
     readonly Account: "Account";
     readonly Verification: "Verification";
@@ -43,12 +47,69 @@ export declare const UserScalarFieldEnum: {
     readonly id: "id";
     readonly name: "name";
     readonly email: "email";
+    readonly password: "password";
+    readonly role: "role";
+    readonly contentStatus: "contentStatus";
     readonly emailVerified: "emailVerified";
+    readonly isBlocked: "isBlocked";
     readonly image: "image";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum];
+export declare const MovieScalarFieldEnum: {
+    readonly id: "id";
+    readonly title: "title";
+    readonly description: "description";
+    readonly director: "director";
+    readonly cast: "cast";
+    readonly year: "year";
+    readonly duration: "duration";
+    readonly rating: "rating";
+    readonly genres: "genres";
+    readonly posterUrl: "posterUrl";
+    readonly backdropUrl: "backdropUrl";
+    readonly trailerUrl: "trailerUrl";
+    readonly streamingUrl: "streamingUrl";
+    readonly platform: "platform";
+    readonly status: "status";
+    readonly price: "price";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly isPublished: "isPublished";
+    readonly isTrending: "isTrending";
+};
+export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum];
+export declare const ReviewScalarFieldEnum: {
+    readonly id: "id";
+    readonly rating: "rating";
+    readonly comment: "comment";
+    readonly isSpoiler: "isSpoiler";
+    readonly isApproved: "isApproved";
+    readonly likes: "likes";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly userId: "userId";
+    readonly movieId: "movieId";
+    readonly parentId: "parentId";
+};
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum];
+export declare const WatchlistScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly movieId: "movieId";
+};
+export type WatchlistScalarFieldEnum = (typeof WatchlistScalarFieldEnum)[keyof typeof WatchlistScalarFieldEnum];
+export declare const PurchaseScalarFieldEnum: {
+    readonly id: "id";
+    readonly transactionId: "transactionId";
+    readonly paymentStatus: "paymentStatus";
+    readonly userId: "userId";
+    readonly movieId: "movieId";
+    readonly amount: "amount";
+    readonly createdAt: "createdAt";
+};
+export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum];
 export declare const SessionScalarFieldEnum: {
     readonly id: "id";
     readonly expiresAt: "expiresAt";

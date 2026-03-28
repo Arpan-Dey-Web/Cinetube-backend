@@ -127,6 +127,50 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.movie`: Exposes CRUD operations for the **Movie** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Movies
+      * const movies = await prisma.movie.findMany()
+      * ```
+      */
+    get movie(): Prisma.MovieDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.review`: Exposes CRUD operations for the **Review** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Reviews
+      * const reviews = await prisma.review.findMany()
+      * ```
+      */
+    get review(): Prisma.ReviewDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.watchlist`: Exposes CRUD operations for the **Watchlist** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Watchlists
+      * const watchlists = await prisma.watchlist.findMany()
+      * ```
+      */
+    get watchlist(): Prisma.WatchlistDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.purchase`: Exposes CRUD operations for the **Purchase** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Purchases
+      * const purchases = await prisma.purchase.findMany()
+      * ```
+      */
+    get purchase(): Prisma.PurchaseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.session`: Exposes CRUD operations for the **Session** model.
       * Example usage:
       * ```ts

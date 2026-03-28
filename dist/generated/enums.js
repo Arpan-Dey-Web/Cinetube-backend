@@ -7,5 +7,12 @@
 *
 * 🟢 You can import this file directly.
 */
-export {};
+export const Role = {
+    USER: 'USER',
+    ADMIN: 'ADMIN'
+};
+export const ContentStatus = {
+    FREE: 'FREE',
+    PREMIUM: 'PREMIUM'
+};
 //# sourceMappingURL=enums.js.map

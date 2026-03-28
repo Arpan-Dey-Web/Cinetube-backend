@@ -1,9 +1,23 @@
 export declare const auth: import("better-auth").Auth<{
     database: (options: import("better-auth").BetterAuthOptions) => import("better-auth").DBAdapter<import("better-auth").BetterAuthOptions>;
+    user: {
+        additionalFields: {
+            password: {
+                type: "string";
+                required: false;
+            };
+            role: {
+                type: "string";
+                defaultValue: string;
+                input: false;
+            };
+        };
+    };
     baseURL: string | undefined;
     trustedOrigins: string[];
     emailAndPassword: {
         enabled: true;
+        autoSignIn: true;
     };
     socialProviders: {
         google: {

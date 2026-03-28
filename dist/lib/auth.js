@@ -4,14 +4,29 @@ import { prisma } from "./prisma.js";
 import { oAuthProxy } from "better-auth/plugins";
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
-        provider: "postgresql", // or "mysql", "postgresql", ...etc
+        provider: "postgresql",
     }),
+    user: {
+        additionalFields: {
+            password: {
+                type: "string",
+                required: false,
+            },
+            role: {
+                type: "string",
+                defaultValue: "USER",
+                input: false,
+            },
+        }
+    },
     baseURL: process.env.FRONTEND_URL,
     trustedOrigins: [process.env.FRONTEND_URL],
-    //...other options
+    // ========================== Email and Password ==========================
     emailAndPassword: {
         enabled: true,
+        autoSignIn: true,
     },
+    // ========================== Social Providers ==========================
     socialProviders: {
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID,

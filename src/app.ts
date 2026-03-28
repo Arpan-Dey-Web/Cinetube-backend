@@ -6,6 +6,7 @@ import path from "path";
 import qs from "qs";
 import { auth } from "./lib/auth";
 import authRouter from "./app/modules/auth/user.router";
+import movieRouter from "./app/modules/movie/movie.route";
 
 const app: Application = express();
 app.set("query parser", (str: string) => qs.parse(str));
@@ -24,8 +25,8 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
-    // methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    // allowedHeaders: [["Content-Type", "Authorization", "Cookie"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   }),
 );
 
@@ -43,7 +44,14 @@ app.use(express.urlencoded({ extended: true }));
 // Bettr auth hander
 app.all('/api/auth/*splat', toNodeHandler(auth));
 
-// app.use("/api/auth", authRouter);
+// Movie Routes
+app.use("/api/movie", movieRouter);
+
+
+
+
+
+
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {
@@ -59,4 +67,4 @@ app.get("/", async (req: Request, res: Response) => {
 
 export default app;
 
-// dont use corn, multer, socket.io etc (scheduler, file uploader, socket)
+

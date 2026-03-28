@@ -1,43 +1,62 @@
-import express, { Application, Request, Response } from "express";
-
+import { toNodeHandler } from "better-auth/node";
 import cookieParser from "cookie-parser";
-import path from "path";
 import cors from "cors";
-import { authRoutes } from "./app/modules/auth/auth.routes.js";
-import { GlobalErrorHandler } from "./app/errorHelpers/GlobalErrorHandler.js";
-import { movieRoutes } from "./app/modules/movie/movie.routes.js";
-
+import express, { Application, Request, Response } from "express";
+import path from "path";
+import qs from "qs";
+import { auth } from "./lib/auth";
+import authRouter from "./app/modules/auth/user.router";
 
 const app: Application = express();
+app.set("query parser", (str: string) => qs.parse(str));
 
-// Middlewares
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cookieParser())
+app.set("view engine", "ejs");
+app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 
-app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:5000"],
+// app.post(
+//   "/webhook",
+//   express.raw({ type: "application/json" }),
+//   PaymentController.handleStripeWebhookEvent,
+// );
+
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization",],
-}))
+    // methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    // allowedHeaders: [["Content-Type", "Authorization", "Cookie"],
+  }),
+);
+
+// Enable URL-encoded form data parsing
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+// ========================== Connect Routes ==========================
 
 
+// Bettr auth hander
+app.all('/api/auth/*splat', toNodeHandler(auth));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/movies", movieRoutes);
+// app.use("/api/auth", authRouter);
 
-
-// Root route 
-app.get('/', async (req: Request, res: Response) => {
-    res.status(201).json({
-        success: true,
-        message: 'CineTube API is working',
-    })
+// Basic route
+app.get("/", async (req: Request, res: Response) => {
+  res.status(201).json({
+    success: true,
+    message: "API is working",
+  });
 });
 
-
-
-app.use(GlobalErrorHandler)
+// ======================== Global Error Handler / Not Found Handler / Other Middleware ========================
+// app.use(globalErrorHandler);
+// app.use(notFound);
 
 export default app;
+
+// dont use corn, multer, socket.io etc (scheduler, file uploader, socket)

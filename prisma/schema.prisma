@@ -1,12 +1,19 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  // output   = "../generated/prisma"
+  output   = "../src/generated"
+  // moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
 
 
 // User Roles for Admin vs Regular User requirements
@@ -21,23 +28,34 @@ enum ContentStatus {
   PREMIUM
 }
 
-model User {
-  id             String   @id @default(uuid())
-  email          String   @unique
-  password       String
-  name           String
-  phone          String?
-  address        String?
-  profilePicture String?
-  role           Role     @default(USER)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
 
-  // Relationships
+
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  password      String?
+  role          Role      @default(USER)
+  contentStatus ContentStatus @default(FREE)
+
+  emailVerified Boolean   @default(false)
+  isBlocked     Boolean   @default(false) // For Admin Moderation
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  // ========================== Relationships ==========================
   reviews   Review[]
   purchases Purchase[] // Track who bought what
   watchlist Watchlist[]
+
+  @@unique([email])
+  @@map("user")
 }
+
+
 
 model Movie {
   id          String        @id @default(uuid())
@@ -52,33 +70,40 @@ model Movie {
   posterUrl   String
   backdropUrl String
   trailerUrl  String
+  streamingUrl String?      // NEW: Requirement for "Streaming links"
+  platform    String?       // NEW: Netflix, Disney+, etc.
   status      ContentStatus @default(FREE)
   price       Float         @default(0)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   isPublished Boolean       @default(false) // Hide draft movies from frontend
   isTrending  Boolean       @default(false) // For the Hero/Trending sections
+  
+  // ========================== Relationships ==========================
   purchases   Purchase[]
-
-  // Relationships
   reviews        Review[]
   watchlistItems Watchlist[]
 }
 
 model Review {
   id         String   @id @default(uuid())
-  rating     Int // 1-10 stars requirement
+  rating     Int      @default(0) // 1-10 stars requirement
   comment    String
   isSpoiler  Boolean  @default(false) // Spoiler toggle requirement
   isApproved Boolean  @default(false) // Admin moderation requirement
   likes      Int      @default(0) // Like/Unlike feature
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   // Relationships
   userId  String
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   movieId String
   movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  
+  parentId String?
+  parent   Review? @relation("ParentReview", fields: [parentId], references: [id])
+  children Review[] @relation("ParentReview")
 }
 
 model Watchlist {
@@ -104,4 +129,52 @@ model Purchase {
   movie Movie @relation(fields: [movieId], references: [id])
 
   @@unique([userId, movieId])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }

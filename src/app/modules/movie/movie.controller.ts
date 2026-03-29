@@ -32,6 +32,39 @@ const getMovieById = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+
+// const getMovieById = catchAsync(async (req: Request, res: Response) => {
+//     const { id } = req.params;
+//     const userId = req.user?.id; // Assuming you have auth middleware
+  
+//     const movie = await MovieService.getSingleMovieFromDB(id);
+  
+//     if (!movie) throw new Error("Movie not found");
+  
+//     // Editorial Logic: Hide the streaming URL if it's Premium and user hasn't paid
+//     let hasAccess = false;
+//     if (movie.status === "FREE") {z
+//       hasAccess = true;
+//     } else if (userId) {
+//       hasAccess = await PurchaseService.checkMovieAccess(userId, movie.id);
+//     }
+  
+//     const responseData = {
+//       ...movie,
+//       // If no access, we redact the streaming URL for security
+//       streamingUrl: hasAccess ? movie.streamingUrl : null,
+//       hasAccess, 
+//     };
+  
+//     sendResponse(res, {
+//       httpStatusCode: 200,
+//       success: true,
+//       message: "Movie details fetched",
+//       data: responseData,
+//     });
+//   });
+
 const createMovie = catchAsync(async (req: Request, res: Response) => {
   const result = await MovieService.createMovieInDB(req.body);
 

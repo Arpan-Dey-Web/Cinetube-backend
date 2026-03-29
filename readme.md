@@ -1,3 +1,4 @@
+```
 a5-prisma/
 ├── prisma/                  # Database schema and migrations
 ├── src/
@@ -21,21 +22,10 @@ a5-prisma/
 ├── tsconfig.json            # TS compiler rules
 └── tsup.config.ts           # Build configuration
 
+```
 
 
-
-
-1. The "Search & Filter" Engine
-Your assignment requires filtering by genre, year, and rating. Currently, your getAllMoviesFromDB likely just returns everything. You need to implement a query builder.
-
-Goal: Allow the frontend to call /api/movie?genres=Action&searchTerm=Inception&limit=10.
-
-Implement Pagination (using skip and take in Prisma).
-
-Implement Partial Search (using contains and mode: 'insensitive').
-
-Return the meta data (total count, total pages) using that sendResponse utility you just built.
-
+```
 2. Role-Based Access Control (RBAC)
 Right now, anyone with the URL can POST a movie or DELETE one. This is a huge security risk.
 
@@ -71,3 +61,4 @@ Since your portal allows "Buying" or "Streaming," you need logic to connect User
 Watchlist: A simple POST to add a movieId to a userId.
 
 Purchases: Prepare the logic for Stripe/SSLCommerz. You’ll need a "Transaction" table to track successful payments before granting access to streamingUrl.
+```

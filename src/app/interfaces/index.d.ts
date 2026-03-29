@@ -1,4 +1,6 @@
-import { IRequestUser } from "./requestUser.interface";
+import { ContentStatus, Role } from "../../generated/enums";
+
+
 
 declare global {
   namespace Express {

@@ -313,7 +313,7 @@ export type UserScalarWhereWithAggregatesInput = {
 }
 
 export type UserCreateInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -332,7 +332,7 @@ export type UserCreateInput = {
 }
 
 export type UserUncheckedCreateInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -389,7 +389,7 @@ export type UserUncheckedUpdateInput = {
 }
 
 export type UserCreateManyInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -572,7 +572,7 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
 }
 
 export type UserCreateWithoutReviewsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -590,7 +590,7 @@ export type UserCreateWithoutReviewsInput = {
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -660,7 +660,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
 }
 
 export type UserCreateWithoutWatchlistInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -678,7 +678,7 @@ export type UserCreateWithoutWatchlistInput = {
 }
 
 export type UserUncheckedCreateWithoutWatchlistInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -748,7 +748,7 @@ export type UserUncheckedUpdateWithoutWatchlistInput = {
 }
 
 export type UserCreateWithoutPurchasesInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -766,7 +766,7 @@ export type UserCreateWithoutPurchasesInput = {
 }
 
 export type UserUncheckedCreateWithoutPurchasesInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -836,7 +836,7 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
 }
 
 export type UserCreateWithoutSessionsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -854,7 +854,7 @@ export type UserCreateWithoutSessionsInput = {
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -924,7 +924,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
 }
 
 export type UserCreateWithoutAccountsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null
@@ -942,7 +942,7 @@ export type UserCreateWithoutAccountsInput = {
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
-  id: string
+  id?: string
   name: string
   email: string
   password?: string | null

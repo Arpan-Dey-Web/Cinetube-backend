@@ -6,13 +6,15 @@ import path from "path";
 import qs from "qs";
 import { auth } from "./lib/auth";
 import movieRouter from "./app/modules/movie/movie.route";
+import reviewRouter from "./app/modules/review/review.route";
+import paymentRouter from "./app/modules/payment/payment.route"; // New
+import { handleStripeWebhook } from "./app/modules/payment/payment.webhook"; // New
 
 const app: Application = express();
-app.set("query parser", (str: string) => qs.parse(str));
 
+app.set("query parser", (str: string) => qs.parse(str));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
-
 
 app.use(cookieParser());
 app.use(
@@ -24,41 +26,37 @@ app.use(
   }),
 );
 
-// Enable URL-encoded form data parsing
-app.use(express.urlencoded({ extended: true }));
+// ========================== SPECIAL STRIPE WEBHOOK ==========================
+app.post(
+  "/api/payment/webhook",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook
+);
 
-// Middleware to parse JSON bodies
+// ========================== REGULAR MIDDLEWARES ==========================
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
 
-// ========================== Connect Routes ==========================
+// ========================== CONNECT ROUTES ==========================
 
-
-// Bettr auth hander
+// Better auth handler
 app.all('/api/auth/*splat', toNodeHandler(auth));
 
 // Movie Routes
 app.use("/api/movie", movieRouter);
 
+// Review Routes
+app.use("/api/review", reviewRouter);
 
-
-
-
-
+// Payment Routes
+app.use("/api/payment", paymentRouter);
 
 // Basic route
 app.get("/", async (req: Request, res: Response) => {
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     message: "Movie Server Is Running",
   });
 });
 
-// ======================== Global Error Handler / Not Found Handler / Other Middleware ========================
-// app.use(globalErrorHandler);
-// app.use(notFound);
-
 export default app;
-
-

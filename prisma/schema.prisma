@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client"
@@ -14,7 +9,6 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
 
 // User Roles for Admin vs Regular User requirements
 enum Role {
@@ -28,59 +22,54 @@ enum ContentStatus {
   PREMIUM
 }
 
-
-
-
 model User {
-  id            String    @id
+  id            String        @id @default(uuid())
   name          String
   email         String
   password      String?
-  role          Role      @default(USER)
+  role          Role          @default(USER)
   contentStatus ContentStatus @default(FREE)
 
-  emailVerified Boolean   @default(false)
-  isBlocked     Boolean   @default(false) // For Admin Moderation
+  emailVerified Boolean     @default(false)
+  isBlocked     Boolean     @default(false) // For Admin Moderation
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   sessions      Session[]
   accounts      Account[]
   // ========================== Relationships ==========================
-  reviews   Review[]
-  purchases Purchase[] // Track who bought what
-  watchlist Watchlist[]
+  reviews       Review[]
+  purchases     Purchase[] // Track who bought what
+  watchlist     Watchlist[]
 
   @@unique([email])
   @@map("user")
 }
 
-
-
 model Movie {
-  id          String        @id @default(uuid())
-  title       String
-  description String
-  director    String
-  cast        String[] // Postgres supports string arrays
-  year        String
-  duration    String
-  rating      Float         @default(0) // This will store the average 1-10
-  genres      String[]
-  posterUrl   String
-  backdropUrl String
-  trailerUrl  String
-  streamingUrl String?      // NEW: Requirement for "Streaming links"
-  platform    String?       // NEW: Netflix, Disney+, etc.
-  status      ContentStatus @default(FREE)
-  price       Float         @default(0)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  isPublished Boolean       @default(false) // Hide draft movies from frontend
-  isTrending  Boolean       @default(false) // For the Hero/Trending sections
-  
+  id           String        @id @default(uuid())
+  title        String
+  description  String
+  director     String
+  cast         String[] // Postgres supports string arrays
+  year         String
+  duration     String
+  rating       Float         @default(0) // This will store the average 1-10
+  genres       String[]
+  posterUrl    String
+  backdropUrl  String
+  trailerUrl   String
+  streamingUrl String? // NEW: Requirement for "Streaming links"
+  platform     String? // NEW: Netflix, Disney+, etc.
+  status       ContentStatus @default(FREE)
+  price        Float         @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  isPublished  Boolean       @default(false) // Hide draft movies from frontend
+  isTrending   Boolean       @default(false) // For the Hero/Trending sections
+
   // ========================== Relationships ==========================
-  purchases   Purchase[]
+  purchases      Purchase[]
   reviews        Review[]
   watchlistItems Watchlist[]
 }
@@ -100,9 +89,9 @@ model Review {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   movieId String
   movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
-  
+
   parentId String?
-  parent   Review? @relation("ParentReview", fields: [parentId], references: [id])
+  parent   Review?  @relation("ParentReview", fields: [parentId], references: [id])
   children Review[] @relation("ParentReview")
 }
 
@@ -128,7 +117,7 @@ model Purchase {
   user  User  @relation(fields: [userId], references: [id])
   movie Movie @relation(fields: [movieId], references: [id])
 
-  @@unique([userId, movieId])
+  @@unique([userId, movieId], name: "userId_movieId")
 }
 
 model Session {

@@ -33,6 +33,11 @@ export type Movie = Prisma.MovieModel
  */
 export type Review = Prisma.ReviewModel
 /**
+ * Model ReviewLike
+ * 
+ */
+export type ReviewLike = Prisma.ReviewLikeModel
+/**
  * Model Watchlist
  * 
  */

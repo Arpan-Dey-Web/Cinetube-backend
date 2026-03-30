@@ -201,7 +201,7 @@ export type PurchaseOrderByWithRelationInput = {
 export type PurchaseWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
     transactionId?: string;
-    userId_movieId?: Prisma.PurchaseUserIdMovieIdCompoundUniqueInput;
+    userId_movieId?: Prisma.PurchaseUserId_movieIdCompoundUniqueInput;
     AND?: Prisma.PurchaseWhereInput | Prisma.PurchaseWhereInput[];
     OR?: Prisma.PurchaseWhereInput[];
     NOT?: Prisma.PurchaseWhereInput | Prisma.PurchaseWhereInput[];
@@ -308,7 +308,7 @@ export type PurchaseListRelationFilter = {
 export type PurchaseOrderByRelationAggregateInput = {
     _count?: Prisma.SortOrder;
 };
-export type PurchaseUserIdMovieIdCompoundUniqueInput = {
+export type PurchaseUserId_movieIdCompoundUniqueInput = {
     userId: string;
     movieId: string;
 };

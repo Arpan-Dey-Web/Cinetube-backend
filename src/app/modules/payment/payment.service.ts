@@ -1,23 +1,39 @@
 import Stripe from "stripe";
 import { prisma } from "../../../lib/prisma";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2023-10-16" as any,
+const apiKey = process.env.STRIPE_SECRET_KEY;
+
+if (!apiKey) {
+  console.error("❌ STRIPE_SECRET_KEY is undefined. Check your .env file.");
+}
+
+// Only initialize once using the verified apiKey
+const stripe = new Stripe(apiKey as string, {
+  apiVersion: "2025-01-27.acacia" as any, 
 });
 
 const createPaymentIntentInDB = async (userId: string, movieId: string) => {
-  // 1. Fetch movie from DB to ensure price integrity
   const movie = await prisma.movie.findUnique({ where: { id: movieId } });
 
   if (!movie) throw new Error("Movie not found");
-  if (movie.status !== "PREMIUM") throw new Error("This movie is already free");
+  
+  // Logic: Ensure we don't charge for free content
+  if (movie.status === "FREE") {
+    throw new Error("This movie is free and does not require payment.");
+  }
 
-  // 2. Create Intent (Amount in cents: $10.00 = 1000)
+  // Stripe expects integers in cents (e.g., $9.99 -> 999)
+  const amountInCents = Math.round(movie.price * 100);
+
+
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: Math.round(movie.price * 100),
+    amount: amountInCents,
     currency: "usd",
-    metadata: { userId, movieId }, // Passed back to us in Webhook
-    payment_method_types: ["card"],
+    metadata: { 
+      userId: userId.toString(), // Ensure it's a string
+      movieId: movieId.toString() 
+    },
+    automatic_payment_methods: { enabled: true },
   });
 
   return {
@@ -28,5 +44,5 @@ const createPaymentIntentInDB = async (userId: string, movieId: string) => {
 
 export const PaymentService = {
   createPaymentIntentInDB,
-  stripe, // Export instance for the webhook to use
+  stripe, 
 };

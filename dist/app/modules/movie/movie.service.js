@@ -1,11 +1,49 @@
 import { prisma } from "../../../lib/prisma.js";
 const getAllMoviesFromDB = async (query) => {
-    return await prisma.movie.findMany({
-        where: {
-            isPublished: true,
+    const { searchTerm, genres, platform, status, page = 1, limit = 10, sortBy = 'createdAt', sortOrder = 'desc' } = query;
+    // 1. Calculate Pagination
+    const skip = (Number(page) - 1) * Number(limit);
+    const take = Number(limit);
+    // 2. Build the "Where" conditions
+    const whereConditions = { isPublished: true };
+    // Global Search (Title, Director, or Cast)
+    if (searchTerm) {
+        whereConditions.OR = [
+            { title: { contains: searchTerm, mode: 'insensitive' } },
+            { director: { contains: searchTerm, mode: 'insensitive' } },
+            { cast: { hasSome: [searchTerm] } },
+        ];
+    }
+    // Filter by Genre (Postgres Array Check)
+    if (genres) {
+        whereConditions.genres = { has: genres };
+    }
+    // Filter by Platform or Status
+    if (platform)
+        whereConditions.platform = platform;
+    if (status)
+        whereConditions.status = status;
+    // 3. Execute Query & Get Total Count for Meta
+    const [result, total] = await Promise.all([
+        prisma.movie.findMany({
+            where: whereConditions,
+            skip,
+            take,
+            orderBy: { [sortBy]: sortOrder },
+        }),
+        prisma.movie.count({ where: whereConditions }),
+    ]);
+    // 4. Calculate Meta Data
+    const totalPages = Math.ceil(total / take);
+    return {
+        meta: {
+            page: Number(page),
+            limit: take,
+            total,
+            totalPages,
         },
-        orderBy: { createdAt: 'desc' }
-    });
+        data: result,
+    };
 };
 const getSingleMovieFromDB = async (id) => {
     return await prisma.movie.findUnique({

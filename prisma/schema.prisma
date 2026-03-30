@@ -1,22 +1,17 @@
-
 generator client {
   provider = "prisma-client"
-  // output   = "../generated/prisma"
   output   = "../src/generated"
-  // moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-// User Roles for Admin vs Regular User requirements
 enum Role {
   USER
   ADMIN
 }
 
-// Pricing types for "premium" vs "free" requirements
 enum ContentStatus {
   FREE
   PREMIUM
@@ -29,18 +24,18 @@ model User {
   password      String?
   role          Role          @default(USER)
   contentStatus ContentStatus @default(FREE)
-
-  emailVerified Boolean     @default(false)
-  isBlocked     Boolean     @default(false) // For Admin Moderation
+  emailVerified Boolean       @default(false)
+  isBlocked     Boolean       @default(false)
   image         String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   sessions      Session[]
   accounts      Account[]
-  // ========================== Relationships ==========================
-  reviews       Review[]
-  purchases     Purchase[] // Track who bought what
-  watchlist     Watchlist[]
+
+  reviews     Review[]
+  purchases   Purchase[]
+  watchlist   Watchlist[]
+  reviewLikes ReviewLike[]
 
   @@unique([email])
   @@map("user")
@@ -51,24 +46,23 @@ model Movie {
   title        String
   description  String
   director     String
-  cast         String[] // Postgres supports string arrays
+  cast         String[]
   year         String
   duration     String
-  rating       Float         @default(0) // This will store the average 1-10
+  rating       Float         @default(0)
   genres       String[]
   posterUrl    String
   backdropUrl  String
   trailerUrl   String
-  streamingUrl String? // NEW: Requirement for "Streaming links"
-  platform     String? // NEW: Netflix, Disney+, etc.
+  streamingUrl String?
+  platform     String?
   status       ContentStatus @default(FREE)
   price        Float         @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  isPublished  Boolean       @default(false) // Hide draft movies from frontend
-  isTrending   Boolean       @default(false) // For the Hero/Trending sections
+  isPublished  Boolean       @default(false)
+  isTrending   Boolean       @default(false)
 
-  // ========================== Relationships ==========================
   purchases      Purchase[]
   reviews        Review[]
   watchlistItems Watchlist[]
@@ -76,23 +70,34 @@ model Movie {
 
 model Review {
   id         String   @id @default(uuid())
-  rating     Int      @default(0) // 1-10 stars requirement
+  rating     Int      @default(0)
   comment    String
-  isSpoiler  Boolean  @default(false) // Spoiler toggle requirement
-  isApproved Boolean  @default(false) // Admin moderation requirement
-  likes      Int      @default(0) // Like/Unlike feature
+  isSpoiler  Boolean  @default(false)
+  isApproved Boolean  @default(false)
+  likes      Int      @default(0)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  // Relationships
   userId  String
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   movieId String
   movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
+  reviewLikes ReviewLike[]
+
   parentId String?
   parent   Review?  @relation("ParentReview", fields: [parentId], references: [id])
   children Review[] @relation("ParentReview")
+}
+
+model ReviewLike {
+  id       String @id @default(uuid())
+  reviewId String
+  userId   String
+  review   Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
 }
 
 model Watchlist {
@@ -102,16 +107,16 @@ model Watchlist {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, movieId]) // Prevents a user from adding the same movie twice
+  @@unique([userId, movieId])
 }
 
 model Purchase {
   id            String   @id @default(uuid())
-  transactionId String   @unique // The ID from the payment provider
-  paymentStatus String   @default("pending") // pending, completed, failed
+  transactionId String   @unique
+  paymentStatus String   @default("pending")
   userId        String
   movieId       String
-  amount        Float // Store the price at the time of purchase
+  amount        Float
   createdAt     DateTime @default(now())
 
   user  User  @relation(fields: [userId], references: [id])

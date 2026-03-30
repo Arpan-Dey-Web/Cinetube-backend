@@ -5,16 +5,19 @@ import express, { Application, Request, Response } from "express";
 import path from "path";
 import qs from "qs";
 import { auth } from "./lib/auth";
+import { handleStripeWebhook } from "./app/modules/payment/payment.webhook";
 import movieRouter from "./app/modules/movie/movie.route";
 import reviewRouter from "./app/modules/review/review.route";
-import paymentRouter from "./app/modules/payment/payment.route"; // New
-import { handleStripeWebhook } from "./app/modules/payment/payment.webhook"; // New
+import paymentRouter from "./app/modules/payment/payment.route";
+import watchlistRouter from "./app/modules/watchlist/watchlist.route";
+import purchaseRouter from "./app/modules/purchase/purchase.route";
+import adminRouter from "./app/modules/admin/admin.routes";
+import { rootRoute } from "./app/modules/root.route";
 
 const app: Application = express();
 
 app.set("query parser", (str: string) => qs.parse(str));
-app.set("view engine", "ejs");
-app.set("views", path.resolve(process.cwd(), `src/app/templates`));
+
 
 app.use(cookieParser());
 app.use(
@@ -30,7 +33,7 @@ app.use(
 app.post(
   "/api/payment/webhook",
   express.raw({ type: "application/json" }),
-  handleStripeWebhook
+  handleStripeWebhook,
 );
 
 // ========================== REGULAR MIDDLEWARES ==========================
@@ -40,7 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 // ========================== CONNECT ROUTES ==========================
 
 // Better auth handler
-app.all('/api/auth/*splat', toNodeHandler(auth));
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 // Movie Routes
 app.use("/api/movie", movieRouter);
@@ -51,12 +54,16 @@ app.use("/api/review", reviewRouter);
 // Payment Routes
 app.use("/api/payment", paymentRouter);
 
-// Basic route
-app.get("/", async (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    message: "Movie Server Is Running",
-  });
-});
+// Watchlist Routes
+app.use("/api/watchlist", watchlistRouter);
+
+// Purchase Routes
+app.use("/api/purchase", purchaseRouter);
+
+// Special Admin Routes
+app.use("/api/admin", adminRouter);
+
+// Root route
+app.get("/", rootRoute);
 
 export default app;

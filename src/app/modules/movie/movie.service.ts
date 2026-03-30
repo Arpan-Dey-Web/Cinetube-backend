@@ -25,7 +25,7 @@ const getAllMoviesFromDB = async (query: Record<string, any>) => {
       whereConditions.OR = [
         { title: { contains: searchTerm, mode: 'insensitive' } },
         { director: { contains: searchTerm, mode: 'insensitive' } },
-        { cast: { hasSome: [searchTerm] } }, // Checks if any cast member matches
+        { cast: { hasSome: [searchTerm] } }, 
       ];
     }
   

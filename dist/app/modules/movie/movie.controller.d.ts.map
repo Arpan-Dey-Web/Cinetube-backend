@@ -1,1 +1,1 @@
-{"version":3,"file":"movie.controller.d.ts","sourceRoot":"","sources":["../../../../src/app/modules/movie/movie.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAoE5C,eAAO,MAAM,eAAe;;;;;;CAM3B,CAAC"}
+{"version":3,"file":"movie.controller.d.ts","sourceRoot":"","sources":["../../../../src/app/modules/movie/movie.controller.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAsG5C,eAAO,MAAM,eAAe;;;;;;CAM3B,CAAC"}

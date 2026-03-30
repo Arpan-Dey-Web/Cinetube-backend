@@ -270,6 +270,7 @@ export type ReviewWhereInput = {
   parentId?: Prisma.StringNullableFilter<"Review"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   movie?: Prisma.XOR<Prisma.MovieScalarRelationFilter, Prisma.MovieWhereInput>
+  reviewLikes?: Prisma.ReviewLikeListRelationFilter
   parent?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
   children?: Prisma.ReviewListRelationFilter
 }
@@ -288,6 +289,7 @@ export type ReviewOrderByWithRelationInput = {
   parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   movie?: Prisma.MovieOrderByWithRelationInput
+  reviewLikes?: Prisma.ReviewLikeOrderByRelationAggregateInput
   parent?: Prisma.ReviewOrderByWithRelationInput
   children?: Prisma.ReviewOrderByRelationAggregateInput
 }
@@ -309,6 +311,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   parentId?: Prisma.StringNullableFilter<"Review"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   movie?: Prisma.XOR<Prisma.MovieScalarRelationFilter, Prisma.MovieWhereInput>
+  reviewLikes?: Prisma.ReviewLikeListRelationFilter
   parent?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null
   children?: Prisma.ReviewListRelationFilter
 }, "id">
@@ -360,6 +363,7 @@ export type ReviewCreateInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
   movie: Prisma.MovieCreateNestedOneWithoutReviewsInput
+  reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput
   parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput
   children?: Prisma.ReviewCreateNestedManyWithoutParentInput
 }
@@ -376,6 +380,7 @@ export type ReviewUncheckedCreateInput = {
   userId: string
   movieId: string
   parentId?: string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput
   children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput
 }
 
@@ -390,6 +395,7 @@ export type ReviewUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
   movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput
+  reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput
   parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput
   children?: Prisma.ReviewUpdateManyWithoutParentNestedInput
 }
@@ -406,6 +412,7 @@ export type ReviewUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput
   children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput
 }
 
@@ -513,6 +520,11 @@ export type ReviewMinOrderByAggregateInput = {
 export type ReviewSumOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   likes?: Prisma.SortOrder
+}
+
+export type ReviewScalarRelationFilter = {
+  is?: Prisma.ReviewWhereInput
+  isNot?: Prisma.ReviewWhereInput
 }
 
 export type ReviewCreateNestedManyWithoutUserInput = {
@@ -665,6 +677,20 @@ export type ReviewUncheckedUpdateManyWithoutParentNestedInput = {
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
+export type ReviewCreateNestedOneWithoutReviewLikesInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReviewLikesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+}
+
+export type ReviewUpdateOneRequiredWithoutReviewLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReviewLikesInput
+  upsert?: Prisma.ReviewUpsertWithoutReviewLikesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutReviewLikesInput, Prisma.ReviewUpdateWithoutReviewLikesInput>, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>
+}
+
 export type ReviewCreateWithoutUserInput = {
   id?: string
   rating?: number
@@ -675,6 +701,7 @@ export type ReviewCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   movie: Prisma.MovieCreateNestedOneWithoutReviewsInput
+  reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput
   parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput
   children?: Prisma.ReviewCreateNestedManyWithoutParentInput
 }
@@ -690,6 +717,7 @@ export type ReviewUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   movieId: string
   parentId?: string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput
   children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput
 }
 
@@ -746,6 +774,7 @@ export type ReviewCreateWithoutMovieInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
+  reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput
   parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput
   children?: Prisma.ReviewCreateNestedManyWithoutParentInput
 }
@@ -761,6 +790,7 @@ export type ReviewUncheckedCreateWithoutMovieInput = {
   updatedAt?: Date | string
   userId: string
   parentId?: string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput
   children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput
 }
 
@@ -801,6 +831,7 @@ export type ReviewCreateWithoutChildrenInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
   movie: Prisma.MovieCreateNestedOneWithoutReviewsInput
+  reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput
   parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput
 }
 
@@ -816,6 +847,7 @@ export type ReviewUncheckedCreateWithoutChildrenInput = {
   userId: string
   movieId: string
   parentId?: string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewCreateOrConnectWithoutChildrenInput = {
@@ -834,6 +866,7 @@ export type ReviewCreateWithoutParentInput = {
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutReviewsInput
   movie: Prisma.MovieCreateNestedOneWithoutReviewsInput
+  reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput
   children?: Prisma.ReviewCreateNestedManyWithoutParentInput
 }
 
@@ -848,6 +881,7 @@ export type ReviewUncheckedCreateWithoutParentInput = {
   updatedAt?: Date | string
   userId: string
   movieId: string
+  reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput
   children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput
 }
 
@@ -883,6 +917,7 @@ export type ReviewUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
   movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput
+  reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput
   parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput
 }
 
@@ -898,6 +933,7 @@ export type ReviewUncheckedUpdateWithoutChildrenInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUpsertWithWhereUniqueWithoutParentInput = {
@@ -914,6 +950,82 @@ export type ReviewUpdateWithWhereUniqueWithoutParentInput = {
 export type ReviewUpdateManyWithWhereWithoutParentInput = {
   where: Prisma.ReviewScalarWhereInput
   data: Prisma.XOR<Prisma.ReviewUpdateManyMutationInput, Prisma.ReviewUncheckedUpdateManyWithoutParentInput>
+}
+
+export type ReviewCreateWithoutReviewLikesInput = {
+  id?: string
+  rating?: number
+  comment: string
+  isSpoiler?: boolean
+  isApproved?: boolean
+  likes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutReviewsInput
+  movie: Prisma.MovieCreateNestedOneWithoutReviewsInput
+  parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput
+  children?: Prisma.ReviewCreateNestedManyWithoutParentInput
+}
+
+export type ReviewUncheckedCreateWithoutReviewLikesInput = {
+  id?: string
+  rating?: number
+  comment: string
+  isSpoiler?: boolean
+  isApproved?: boolean
+  likes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+  movieId: string
+  parentId?: string | null
+  children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput
+}
+
+export type ReviewCreateOrConnectWithoutReviewLikesInput = {
+  where: Prisma.ReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>
+}
+
+export type ReviewUpsertWithoutReviewLikesInput = {
+  update: Prisma.XOR<Prisma.ReviewUpdateWithoutReviewLikesInput, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>
+  where?: Prisma.ReviewWhereInput
+}
+
+export type ReviewUpdateToOneWithWhereWithoutReviewLikesInput = {
+  where?: Prisma.ReviewWhereInput
+  data: Prisma.XOR<Prisma.ReviewUpdateWithoutReviewLikesInput, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>
+}
+
+export type ReviewUpdateWithoutReviewLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  comment?: Prisma.StringFieldUpdateOperationsInput | string
+  isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+  movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput
+  parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput
+  children?: Prisma.ReviewUpdateManyWithoutParentNestedInput
+}
+
+export type ReviewUncheckedUpdateWithoutReviewLikesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  comment?: Prisma.StringFieldUpdateOperationsInput | string
+  isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  likes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  movieId?: Prisma.StringFieldUpdateOperationsInput | string
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput
 }
 
 export type ReviewCreateManyUserInput = {
@@ -939,6 +1051,7 @@ export type ReviewUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput
+  reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput
   parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput
   children?: Prisma.ReviewUpdateManyWithoutParentNestedInput
 }
@@ -954,6 +1067,7 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput
   children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput
 }
 
@@ -993,6 +1107,7 @@ export type ReviewUpdateWithoutMovieInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
+  reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput
   parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput
   children?: Prisma.ReviewUpdateManyWithoutParentNestedInput
 }
@@ -1008,6 +1123,7 @@ export type ReviewUncheckedUpdateWithoutMovieInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput
   children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput
 }
 
@@ -1048,6 +1164,7 @@ export type ReviewUpdateWithoutParentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput
   movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput
+  reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput
   children?: Prisma.ReviewUpdateManyWithoutParentNestedInput
 }
 
@@ -1062,6 +1179,7 @@ export type ReviewUncheckedUpdateWithoutParentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   movieId?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput
   children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput
 }
 
@@ -1084,10 +1202,12 @@ export type ReviewUncheckedUpdateManyWithoutParentInput = {
  */
 
 export type ReviewCountOutputType = {
+  reviewLikes: number
   children: number
 }
 
 export type ReviewCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  reviewLikes?: boolean | ReviewCountOutputTypeCountReviewLikesArgs
   children?: boolean | ReviewCountOutputTypeCountChildrenArgs
 }
 
@@ -1099,6 +1219,13 @@ export type ReviewCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the ReviewCountOutputType
    */
   select?: Prisma.ReviewCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ReviewCountOutputType without action
+ */
+export type ReviewCountOutputTypeCountReviewLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewLikeWhereInput
 }
 
 /**
@@ -1123,6 +1250,7 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   parentId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   movie?: boolean | Prisma.MovieDefaultArgs<ExtArgs>
+  reviewLikes?: boolean | Prisma.Review$reviewLikesArgs<ExtArgs>
   parent?: boolean | Prisma.Review$parentArgs<ExtArgs>
   children?: boolean | Prisma.Review$childrenArgs<ExtArgs>
   _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>
@@ -1180,6 +1308,7 @@ export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   movie?: boolean | Prisma.MovieDefaultArgs<ExtArgs>
+  reviewLikes?: boolean | Prisma.Review$reviewLikesArgs<ExtArgs>
   parent?: boolean | Prisma.Review$parentArgs<ExtArgs>
   children?: boolean | Prisma.Review$childrenArgs<ExtArgs>
   _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>
@@ -1200,6 +1329,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     movie: Prisma.$MoviePayload<ExtArgs>
+    reviewLikes: Prisma.$ReviewLikePayload<ExtArgs>[]
     parent: Prisma.$ReviewPayload<ExtArgs> | null
     children: Prisma.$ReviewPayload<ExtArgs>[]
   }
@@ -1611,6 +1741,7 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   movie<T extends Prisma.MovieDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MovieDefaultArgs<ExtArgs>>): Prisma.Prisma__MovieClient<runtime.Types.Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reviewLikes<T extends Prisma.Review$reviewLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$reviewLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   parent<T extends Prisma.Review$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$parentArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   children<T extends Prisma.Review$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2046,6 +2177,30 @@ export type ReviewDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Reviews to delete.
    */
   limit?: number
+}
+
+/**
+ * Review.reviewLikes
+ */
+export type Review$reviewLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewLike
+   */
+  select?: Prisma.ReviewLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewLike
+   */
+  omit?: Prisma.ReviewLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewLikeInclude<ExtArgs> | null
+  where?: Prisma.ReviewLikeWhereInput
+  orderBy?: Prisma.ReviewLikeOrderByWithRelationInput | Prisma.ReviewLikeOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewLikeScalarFieldEnum | Prisma.ReviewLikeScalarFieldEnum[]
 }
 
 /**

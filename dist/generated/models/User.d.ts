@@ -265,7 +265,7 @@ export type UserScalarWhereWithAggregatesInput = {
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string;
 };
 export type UserCreateInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -283,7 +283,7 @@ export type UserCreateInput = {
     watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -337,7 +337,7 @@ export type UserUncheckedUpdateInput = {
     watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateManyInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -497,7 +497,7 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>;
 };
 export type UserCreateWithoutReviewsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -514,7 +514,7 @@ export type UserCreateWithoutReviewsInput = {
     watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutReviewsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -578,7 +578,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
     watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutWatchlistInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -595,7 +595,7 @@ export type UserCreateWithoutWatchlistInput = {
     purchases?: Prisma.PurchaseCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutWatchlistInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -659,7 +659,7 @@ export type UserUncheckedUpdateWithoutWatchlistInput = {
     purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutPurchasesInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -676,7 +676,7 @@ export type UserCreateWithoutPurchasesInput = {
     watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutPurchasesInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -740,7 +740,7 @@ export type UserUncheckedUpdateWithoutPurchasesInput = {
     watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutSessionsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -757,7 +757,7 @@ export type UserCreateWithoutSessionsInput = {
     watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutSessionsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -821,7 +821,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
     watchlist?: Prisma.WatchlistUncheckedUpdateManyWithoutUserNestedInput;
 };
 export type UserCreateWithoutAccountsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;
@@ -838,7 +838,7 @@ export type UserCreateWithoutAccountsInput = {
     watchlist?: Prisma.WatchlistCreateNestedManyWithoutUserInput;
 };
 export type UserUncheckedCreateWithoutAccountsInput = {
-    id: string;
+    id?: string;
     name: string;
     email: string;
     password?: string | null;

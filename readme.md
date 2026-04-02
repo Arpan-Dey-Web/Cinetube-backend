@@ -260,6 +260,9 @@ app.all("/api/auth/*", toNodeHandler(auth));
 
 > Provide admin credentials here for testing:
 
+Admin Email      : admin@cinetube.com
+Admin Password   : admin123
+
 ```
 Email: admin@example.com
 Password: 123456
@@ -277,7 +280,7 @@ Password: 123456
 
 ## 🎥 Demo Video
 
-📺 *Add your project walkthrough video link here*
+📺 *https://drive.google.com/file/d/1GJ6Y_Mi8WuRMPp-8f7fKNYM8-RWrB_r0/view?usp=sharing*
 
 ---
 

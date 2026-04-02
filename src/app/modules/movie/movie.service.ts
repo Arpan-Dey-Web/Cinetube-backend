@@ -1,67 +1,70 @@
 import { Movie } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
 
-const getAllMoviesFromDB = async (query: Record<string, any>) => {
-    const { 
-      searchTerm, 
-      genres, 
-      platform, 
-      status, 
-      page = 1, 
-      limit = 10, 
-      sortBy = 'createdAt', 
-      sortOrder = 'desc' 
-    } = query;
-  
-    // 1. Calculate Pagination
-    const skip = (Number(page) - 1) * Number(limit);
-    const take = Number(limit);
-  
-    // 2. Build the "Where" conditions
-    const whereConditions: any = { isPublished: true };
-  
-    // Global Search (Title, Director, or Cast)
-    if (searchTerm) {
-      whereConditions.OR = [
-        { title: { contains: searchTerm, mode: 'insensitive' } },
-        { director: { contains: searchTerm, mode: 'insensitive' } },
-        { cast: { hasSome: [searchTerm] } }, 
-      ];
-    }
-  
-    // Filter by Genre (Postgres Array Check)
-    if (genres) {
-      whereConditions.genres = { has: genres };
-    }
-  
-    // Filter by Platform or Status
-    if (platform) whereConditions.platform = platform;
-    if (status) whereConditions.status = status;
-  
-    // 3. Execute Query & Get Total Count for Meta
-    const [result, total] = await Promise.all([
-      prisma.movie.findMany({
-        where: whereConditions,
-        skip,
-        take,
-        orderBy: { [sortBy]: sortOrder },
-      }),
-      prisma.movie.count({ where: whereConditions }),
-    ]);
-  
-    // 4. Calculate Meta Data
-    const totalPages = Math.ceil(total / take);
-  
-    return {
-      meta: {
-        page: Number(page),
-        limit: take,
-        total,
-        totalPages,
-      },
-      data: result,
-    };
+const getAllMoviesFromDB = async (query: Record<string, any>, userRole?: string) => {
+  const { 
+    searchTerm, 
+    genres, 
+    platform, 
+    status, 
+    page = 1, 
+    limit = 10, 
+    sortBy = 'createdAt', 
+    sortOrder = 'desc' 
+  } = query;
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const take = Number(limit);
+
+  // 1. DYNAMIC Visibility Logic
+  // We start with an empty object.
+  const whereConditions: any = {};
+
+  // If the user is NOT an Admin, they are restricted to ONLY published movies.
+  // If they ARE an Admin, this condition is skipped, allowing them to see drafts.
+  if (userRole !== "ADMIN") {
+    whereConditions.isPublished = true;
+  }
+
+  // 2. Global Search
+  if (searchTerm) {
+    whereConditions.OR = [
+      { title: { contains: searchTerm, mode: 'insensitive' } },
+      { director: { contains: searchTerm, mode: 'insensitive' } },
+      { cast: { hasSome: [searchTerm] } }, 
+    ];
+  }
+
+  // 3. Filters
+  if (genres) {
+    whereConditions.genres = { has: genres };
+  }
+  if (platform) whereConditions.platform = platform;
+  if (status) whereConditions.status = status;
+
+  // 4. Execution
+  const [result, total] = await Promise.all([
+    prisma.movie.findMany({
+      where: whereConditions,
+      skip,
+      take,
+      orderBy: { [sortBy]: sortOrder },
+    }),
+    prisma.movie.count({ where: whereConditions }),
+  ]);
+
+  const totalPages = Math.ceil(total / take);
+
+  return {
+    meta: {
+      page: Number(page),
+      limit: take,
+      total,
+      totalPages,
+    },
+    data: result,
   };
+};
 
 const getSingleMovieFromDB = async (id: string) => {
   return await prisma.movie.findUnique({
@@ -71,8 +74,15 @@ const getSingleMovieFromDB = async (id: string) => {
         where: { isApproved: true },
         include: { 
           user: { 
-            select: { name: true, image: true, role: true } 
+            select: { 
+              name: true, 
+              image: true, 
+              role: true 
+            } 
           } 
+        },
+        orderBy: {
+          createdAt: 'desc' 
         }
       }
     }
@@ -116,7 +126,7 @@ const createMovieInDB = async (movieData: Partial<Movie>): Promise<Movie> => {
         platform: platform || "Flicks Original",
         status: status || "FREE",
         price: price ? Number(price) : 0,
-        isPublished: false, 
+        isPublished: movieData.isPublished ?? false, 
         isTrending: isTrending || false,
       },
     });
@@ -132,6 +142,7 @@ const createMovieInDB = async (movieData: Partial<Movie>): Promise<Movie> => {
     if (!isExist) {
       throw new Error("Movie not found!");
     }
+    if (payload.price) payload.price = Number(payload.price);
   
     // Prepare arrays if they are being updated
     const updateData = { ...payload };

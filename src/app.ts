@@ -2,7 +2,6 @@ import { toNodeHandler } from "better-auth/node";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
-import path from "path";
 import qs from "qs";
 import { auth } from "./lib/auth";
 import { handleStripeWebhook } from "./app/modules/payment/payment.webhook";
@@ -35,7 +34,7 @@ app.post(
   express.raw({ type: "application/json" }),
   handleStripeWebhook,
 );
-
+ 
 // ========================== REGULAR MIDDLEWARES ==========================
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,6 +43,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Better auth handler
 app.all("/api/auth/*splat", toNodeHandler(auth));
+
+
 
 // Movie Routes
 app.use("/api/movie", movieRouter);

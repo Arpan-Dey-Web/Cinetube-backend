@@ -7,10 +7,14 @@ import { Role } from "../../../enums/enum";
 
 const movieRouter = Router();
 
+// Get All Movies Route
 movieRouter.get("/", MovieController.getAllMovies);
 
+
+// Get Movie by ID Route
 movieRouter.get("/:id", MovieController.getMovieById);
 
+// Create Movie Route
 movieRouter.post(
   "/create-movie",
   auth(Role.Admin),
@@ -18,6 +22,7 @@ movieRouter.post(
   MovieController.createMovie,
 );
 
+// Update Movie Route
 movieRouter.put(
   "/update-movie/:id",
   auth(Role.Admin),
@@ -25,9 +30,7 @@ movieRouter.put(
   MovieController.updateMovie,
 );
 
-movieRouter.delete("/:id",
-    auth(Role.Admin),
-    MovieController.deleteMovie);
-    
+// Delete Movie Route
+movieRouter.delete("/:id", auth(Role.Admin), MovieController.deleteMovie);
 
 export default movieRouter;

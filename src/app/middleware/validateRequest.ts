@@ -2,10 +2,6 @@ import {  ZodSchema } from "zod";
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 
-/**
- * We use ZodSchema here because it is the most generic 
- * type that covers ZodObject, ZodEffects, etc.
- */
 export const validateRequest = (schema: ZodSchema<any>) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const parsedData = await schema.parseAsync({
@@ -15,14 +11,22 @@ export const validateRequest = (schema: ZodSchema<any>) => {
       cookies: req.cookies,
     });
 
-    // We assign the parsed/transformed data back to the request.
-    // This ensures that if Zod converted a string to a Number, 
-    // your controller gets the Number.
+    // req.body is usually safe to overwrite
     req.body = parsedData.body;
-    req.query = parsedData.query;
-    req.params = parsedData.params;
-    req.cookies = parsedData.cookies;
+
+    // Use Object.assign for query and params to avoid the "getter only" error
+    if (parsedData.query) {
+        Object.assign(req.query, parsedData.query);
+    }
+    if (parsedData.params) {
+        Object.assign(req.params, parsedData.params);
+    }
     
+    // req.cookies is also generally writable, but Object.assign is safer
+    if (parsedData.cookies) {
+        req.cookies = parsedData.cookies;
+    }
+
     next();
   });
 };

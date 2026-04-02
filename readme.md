@@ -6,7 +6,7 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 
 ## 🚀 Live Links
 
-* 🔗 Backend Live: [https://cinetube-backend.vercel.app/](https://cinetube-backend.vercel.app)
+* 🔗 Backend Live: [https://cinetube-backend.vercel.app/](https://cinetube-backend.vercel.app/)
 * 🔗 Frontend Live: [https://cinetube-frontend-ten.vercel.app](https://cinetube-frontend-ten.vercel.app)
 
 ---
@@ -263,8 +263,8 @@ npm run dev
 
 ## 🧪 Testing Admin Access
 
-User Email      : [admin@cinetube.com]
-User Password   : admin123
+User Email      : [user@cinetube.com]
+User Password   : user123
 
 Admin Email     : [admin@cinetube.com]
 Admin Password  : admin123
@@ -297,3 +297,102 @@ Admin Password  : admin123
 ## 💡 Final Notes
 
 Clean, modular backend using real-world architecture patterns. Suitable for production-level MERN applications and backend-focused roles.
+
+---
+
+## 🧩 Architecture Highlights
+
+* **Modular (feature-first) architecture** with clear separation of concerns (controller → service → validation → router)
+* **Middleware pipeline** for auth, validation, and error handling
+* **Prisma ORM layer** for type-safe database access
+* **Webhook-first payment confirmation** (Stripe) to avoid client-side trust issues
+
+---
+
+## 🧪 Sample Requests
+
+### Create Movie (Admin)
+
+```http
+POST /api/movie/create-movie
+Content-Type: application/json
+```
+
+```json
+{
+  "title": "Inception",
+  "genre": ["Sci-Fi", "Action"],
+  "releaseYear": 2010,
+  "director": "Christopher Nolan",
+  "cast": ["Leonardo DiCaprio"],
+  "priceType": "premium",
+  "streamingLink": "https://youtube.com/..."
+}
+```
+
+---
+
+### Create Review (User)
+
+```http
+POST /api/review
+```
+
+```json
+{
+  "movieId": "movie_id_here",
+  "rating": 9,
+  "review": "Amazing storyline and visuals",
+  "spoiler": false,
+  "tags": ["mind-bending"]
+}
+```
+
+---
+
+## 🗃️ Prisma (Conceptual Model)
+
+> Simplified representation of core entities
+
+* **User** → id, email, role
+* **Movie** → id, title, genre, priceType
+* **Review** → id, userId, movieId, rating, approved
+* **Purchase** → id, userId, movieId, access
+* **Watchlist** → id, userId, movieId
+
+---
+
+## ⚠️ Error Handling Strategy
+
+* Centralized async handler (`catchAsync`)
+* Standard API response format via `sendResponse`
+* Validation errors handled via request schema middleware
+
+```json
+{
+  "success": false,
+  "message": "Validation Error",
+  "error": {}
+}
+```
+
+---
+
+## 📜 NPM Scripts
+
+```bash
+npm run dev      # Run development server
+npm run build    # Build project (tsup)
+npm start        # Run production build
+```
+
+---
+
+## 📈 Why This Project Stands Out
+
+* Real-world **payment integration (Stripe)**
+* Secure **role-based authorization system**
+* Clean **scalable backend architecture**
+* Production-ready patterns (webhooks, modular routing, validation)
+
+---

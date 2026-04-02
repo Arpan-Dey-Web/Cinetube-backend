@@ -6,7 +6,7 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 
 ## 🚀 Live Links
 
-* 🔗 Backend Live: [https://cinetube-frontend-ten.vercel.app](https://cinetube-frontend-ten.vercel.app)
+* 🔗 Backend Live: [https://cinetube-backend.vercel.app/](https://cinetube-backend.vercel.app)
 * 🔗 Frontend Live: [https://cinetube-frontend-ten.vercel.app](https://cinetube-frontend-ten.vercel.app)
 
 ---

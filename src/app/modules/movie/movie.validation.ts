@@ -11,7 +11,7 @@ const movieDataSchema = z.object({
   posterUrl: z.string().url("Invalid poster URL"),
   backdropUrl: z.string().url("Invalid backdrop URL"),
   trailerUrl: z.string().url("Invalid trailer URL"),
-  streamingUrl: z.string().url().optional().nullable(),
+  streamingUrl: z.string().url("Invalid streaming URL").or(z.literal("")).nullable().optional(),
   status: z.enum(["FREE", "PREMIUM"]),
   price: z.number().nonnegative().default(0),
   isPublished: z.boolean().default(false),

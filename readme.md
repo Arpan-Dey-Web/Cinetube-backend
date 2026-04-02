@@ -6,8 +6,8 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 
 ## 🚀 Live Links
 
-* 🔗 Backend Live: *https://cinetube-backend.vercel.app*
-* 🔗 Frontend Live: *https://cinetube-frontend-ten.vercel.app*
+* 🔗 Backend Live: *Add your deployed URL here*
+* 🔗 Frontend Live: *Add your frontend URL here*
 
 ---
 
@@ -17,9 +17,9 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 * **Language:** TypeScript
 * **Database:** PostgreSQL
 * **ORM:** Prisma
-* **Authentication:** Better Auth
-* **Payment Integration:**  Stripe
-* **Deployment:** Vercel 
+* **Authentication:** JWT
+* **Payment Integration:** SSLCommerz / Stripe
+* **Deployment:** Vercel / Render / Railway
 
 ---
 
@@ -50,10 +50,15 @@ src/
 
 ## 🔐 Authentication
 
-* JWT-based authentication system
-* Secure password hashing
-* Protected routes using middleware
+This project uses **Better Auth** for authentication and session management.
+
+* Email/password authentication
+* OAuth login (Google, GitHub)
+* Secure session handling via Better Auth
+* Cookie-based authentication (with credentials enabled in CORS)
 * Role-based access control (User & Admin)
+
+> Note: Traditional JWT implementation is not used here; Better Auth manages authentication flows and sessions internally.
 
 ---
 
@@ -140,7 +145,31 @@ npm install
 
 ### 3️⃣ Setup environment variables
 
-Create a `.env` file and add:
+Create a `.env` file and configure the following:
+
+```env
+NODE_ENV=development
+PORT=5000
+
+DATABASE_URL=your_postgresql_database_url
+
+FRONTEND_URL=http://localhost:3000
+
+# Better Auth
+BETTER_AUTH_SECRET=your_better_auth_secret
+
+# OAuth Credentials
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+```
+
+⚠️ **Security Note:** Never commit real secrets to GitHub. Always use environment variables and keep them private.
 
 ```env
 DATABASE_URL=your_database_url
@@ -171,7 +200,7 @@ npm run dev
 ### 🎬 Movie Routes
 
 * `GET /api/movie` → Get all movies
-* `POST /api/create-movie` → Create movie (Admin)
+* `POST /api/movie` → Create movie (Admin)
 * `PATCH /api/movie/:id` → Update movie (Admin)
 * `DELETE /api/movie/:id` → Delete movie (Admin)
 

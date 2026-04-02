@@ -6,8 +6,8 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 
 ## 🚀 Live Links
 
-* 🔗 Backend Live: *Add your deployed URL here*
-* 🔗 Frontend Live: *Add your frontend URL here*
+* 🔗 Backend Live: [https://cinetube-frontend-ten.vercel.app](https://cinetube-frontend-ten.vercel.app)
+* 🔗 Frontend Live: [https://cinetube-frontend-ten.vercel.app](https://cinetube-frontend-ten.vercel.app)
 
 ---
 
@@ -17,9 +17,9 @@ A scalable and modular backend API for a **Movie and Series Rating & Streaming P
 * **Language:** TypeScript
 * **Database:** PostgreSQL
 * **ORM:** Prisma
-* **Authentication:** JWT
-* **Payment Integration:** SSLCommerz / Stripe
-* **Deployment:** Vercel / Render / Railway
+* **Authentication:** Better Auth
+* **Payment Integration:** Stripe
+* **Deployment:** Vercel
 
 ---
 
@@ -58,7 +58,7 @@ This project uses **Better Auth** for authentication and session management.
 * Cookie-based authentication (with credentials enabled in CORS)
 * Role-based access control (User & Admin)
 
-> Note: Traditional JWT implementation is not used here; Better Auth manages authentication flows and sessions internally.
+> Note: Traditional JWT implementation is not used here.
 
 ---
 
@@ -103,9 +103,8 @@ This project uses **Better Auth** for authentication and session management.
 
 ### 💳 Payment Module
 
-* Subscription-based payment system
-* Integration with payment gateway
-* Webhook handling for payment confirmation
+* Stripe payment intent flow
+* Webhook-based verification
 
 ### 🛒 Purchase Module
 
@@ -133,7 +132,7 @@ This project uses **Better Auth** for authentication and session management.
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/cinetube-backend.git
+git clone https://github.com/Arpan-Dey-Web/Cinetube-backend.git
 cd cinetube-backend
 ```
 
@@ -144,8 +143,6 @@ npm install
 ```
 
 ### 3️⃣ Setup environment variables
-
-Create a `.env` file and configure the following:
 
 ```env
 NODE_ENV=development
@@ -169,13 +166,9 @@ STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_webhook_secret
 ```
 
-⚠️ **Security Note:** Never commit real secrets to GitHub. Always use environment variables and keep them private.
+⚠️ Never commit real secrets to GitHub.
 
-```env
-DATABASE_URL=your_database_url
-JWT_SECRET=your_secret
-PORT=5000
-```
+---
 
 ### 4️⃣ Run database migrations
 
@@ -195,98 +188,100 @@ npm run dev
 
 ### 🔐 Auth (Better Auth)
 
-* `ALL /api/auth/*` → handled via Better Auth
+* `ALL /api/auth/*`
 
-### 🎬 Movie Routes
+---
 
-* `GET /api/movie` → Get all movies
-* `POST /api/movie` → Create movie (Admin)
-* `PATCH /api/movie/:id` → Update movie (Admin)
-* `DELETE /api/movie/:id` → Delete movie (Admin)
+### 🎬 Movie Routes (`/api/movie`)
 
-### ⭐ Review Routes
+* `GET /`
+* `GET /:id`
+* `POST /create-movie` (**Admin**)
+* `PUT /update-movie/:id` (**Admin**)
+* `DELETE /:id` (**Admin**)
 
-* `POST /api/review` → Create review
-* `GET /api/review` → Get all reviews
-* `PATCH /api/review/:id` → Update review
-* `DELETE /api/review/:id` → Delete review
+---
 
-### 💳 Payment Routes
+### ⭐ Review Routes (`/api/review`)
 
-* `POST /api/payment` → Create payment session
-* `POST /api/payment/webhook` → Stripe webhook (raw body)
+* `GET /:movieId`
+* `POST /`
+* `PATCH /my-review/:id`
+* `DELETE /my-review/:id`
+* `POST /like/:id`
+* `PATCH /moderate/:id`
 
-### 📌 Watchlist Routes
+---
 
-* `POST /api/watchlist` → Add to watchlist
-* `GET /api/watchlist` → Get user watchlist
-* `DELETE /api/watchlist/:id` → Remove item
+### 💳 Payment Routes (`/api/payment`)
 
-### 🛒 Purchase Routes
+* `POST /create-intent`
+* `POST /webhook`
 
-* `POST /api/purchase` → Create purchase
-* `GET /api/purchase` → Get purchase history
+---
 
-### 🛠️ Admin Routes
+### 📌 Watchlist Routes (`/api/watchlist`)
 
-* `GET /api/admin` → Admin dashboard data
-* Review moderation & analytics endpoints
+* `GET /`
+* `POST /toggle`
+
+---
+
+### 🛒 Purchase Routes (`/api/purchase`)
+
+* `GET /my-purchases`
+* `GET /check-access/:movieId`
+* `POST /create`
+
+---
+
+### 🛠️ Admin Routes (`/api/admin`)
+
+* `GET /dashboard-stats`
+
+---
+
+### 🌐 Root Route
+
+```json
+{
+  "success": true,
+  "message": "Movie Server Is Running"
+}
+```
 
 ---
 
 ## ⚙️ Express App Configuration Highlights
 
-* Custom query parser using `qs`
-* Secure CORS configuration with credentials support
-* Cookie parsing enabled
-* Stripe webhook uses **raw body parser** (important for signature verification)
-* Modular route architecture
-
-```ts
-// Stripe webhook must be before express.json()
-app.post(
-  "/api/payment/webhook",
-  express.raw({ type: "application/json" }),
-  handleStripeWebhook
-);
-
-// Better Auth handler
-app.all("/api/auth/*", toNodeHandler(auth));
-```
+* Custom query parser (`qs`)
+* Cookie parser enabled
+* Credential-based CORS
+* Stripe webhook with raw body
 
 ---
 
 ## 🧪 Testing Admin Access
 
-> Provide admin credentials here for testing:
+User Email      : [admin@cinetube.com]
+User Password   : admin123
 
-Admin Email      : admin@cinetube.com
-Admin Password   : admin123
-
-```
-Email: admin@example.com
-Password: 123456
-```
+Admin Email     : [admin@cinetube.com]
+Admin Password  : admin123
 
 ---
 
 ## 📦 Deployment
 
-* Configure environment variables in hosting platform
-* Use **Render / Railway / Vercel** for deployment
-* Ensure database is properly connected
+* Vercel deployment
+* Environment variables configured
+* PostgreSQL connected via Prisma
 
 ---
 
 ## 🎥 Demo Video
 
-📺 *https://drive.google.com/file/d/1GJ6Y_Mi8WuRMPp-8f7fKNYM8-RWrB_r0/view?usp=sharing*
-
----
-
-## 📄 License
-
-This project is licensed for educational and portfolio purposes.
+📺 [https://drive.google.com/file/d/1GJ6Y_Mi8WuRMPp-8f7fKNYM8-RWrB_r0/view](https://drive.google.com/file/d/1GJ6Y_Mi8WuRMPp-8f7fKNYM8-RWrB_r0/view)
 
 ---
 
@@ -301,6 +296,4 @@ This project is licensed for educational and portfolio purposes.
 
 ## 💡 Final Notes
 
-This project is built following **clean architecture principles**, modular structure, and scalable backend practices. It demonstrates real-world implementation of authentication, payment systems, and user interaction features.
-
-> Feel free to fork, contribute, or use it as a reference for your own projects 🚀
+Clean, modular backend using real-world architecture patterns. Suitable for production-level MERN applications and backend-focused roles.

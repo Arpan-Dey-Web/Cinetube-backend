@@ -2,7 +2,10 @@ import { z } from "zod";
 
 const addToWatchlistSchema = z.object({
   body: z.object({
-    movieId: z.string({ message: "Movie ID is required" }),
+    movieId: z
+      .string({ message: "Movie ID is required" })
+      .trim()
+      .min(1, "Movie ID is required"),
   }),
 });
 

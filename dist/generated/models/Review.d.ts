@@ -50,6 +50,7 @@ export type ReviewCountAggregateOutputType = {
     id: number;
     rating: number;
     comment: number;
+    tags: number;
     isSpoiler: number;
     isApproved: number;
     likes: number;
@@ -98,6 +99,7 @@ export type ReviewCountAggregateInputType = {
     id?: true;
     rating?: true;
     comment?: true;
+    tags?: true;
     isSpoiler?: true;
     isApproved?: true;
     likes?: true;
@@ -188,6 +190,7 @@ export type ReviewGroupByOutputType = {
     id: string;
     rating: number;
     comment: string;
+    tags: string[];
     isSpoiler: boolean;
     isApproved: boolean;
     likes: number;
@@ -212,6 +215,7 @@ export type ReviewWhereInput = {
     id?: Prisma.StringFilter<"Review"> | string;
     rating?: Prisma.IntFilter<"Review"> | number;
     comment?: Prisma.StringFilter<"Review"> | string;
+    tags?: Prisma.StringNullableListFilter<"Review">;
     isSpoiler?: Prisma.BoolFilter<"Review"> | boolean;
     isApproved?: Prisma.BoolFilter<"Review"> | boolean;
     likes?: Prisma.IntFilter<"Review"> | number;
@@ -222,6 +226,7 @@ export type ReviewWhereInput = {
     parentId?: Prisma.StringNullableFilter<"Review"> | string | null;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     movie?: Prisma.XOR<Prisma.MovieScalarRelationFilter, Prisma.MovieWhereInput>;
+    reviewLikes?: Prisma.ReviewLikeListRelationFilter;
     parent?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null;
     children?: Prisma.ReviewListRelationFilter;
 };
@@ -229,6 +234,7 @@ export type ReviewOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
     rating?: Prisma.SortOrder;
     comment?: Prisma.SortOrder;
+    tags?: Prisma.SortOrder;
     isSpoiler?: Prisma.SortOrder;
     isApproved?: Prisma.SortOrder;
     likes?: Prisma.SortOrder;
@@ -239,6 +245,7 @@ export type ReviewOrderByWithRelationInput = {
     parentId?: Prisma.SortOrderInput | Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
     movie?: Prisma.MovieOrderByWithRelationInput;
+    reviewLikes?: Prisma.ReviewLikeOrderByRelationAggregateInput;
     parent?: Prisma.ReviewOrderByWithRelationInput;
     children?: Prisma.ReviewOrderByRelationAggregateInput;
 };
@@ -249,6 +256,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.ReviewWhereInput | Prisma.ReviewWhereInput[];
     rating?: Prisma.IntFilter<"Review"> | number;
     comment?: Prisma.StringFilter<"Review"> | string;
+    tags?: Prisma.StringNullableListFilter<"Review">;
     isSpoiler?: Prisma.BoolFilter<"Review"> | boolean;
     isApproved?: Prisma.BoolFilter<"Review"> | boolean;
     likes?: Prisma.IntFilter<"Review"> | number;
@@ -259,6 +267,7 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
     parentId?: Prisma.StringNullableFilter<"Review"> | string | null;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     movie?: Prisma.XOR<Prisma.MovieScalarRelationFilter, Prisma.MovieWhereInput>;
+    reviewLikes?: Prisma.ReviewLikeListRelationFilter;
     parent?: Prisma.XOR<Prisma.ReviewNullableScalarRelationFilter, Prisma.ReviewWhereInput> | null;
     children?: Prisma.ReviewListRelationFilter;
 }, "id">;
@@ -266,6 +275,7 @@ export type ReviewOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     rating?: Prisma.SortOrder;
     comment?: Prisma.SortOrder;
+    tags?: Prisma.SortOrder;
     isSpoiler?: Prisma.SortOrder;
     isApproved?: Prisma.SortOrder;
     likes?: Prisma.SortOrder;
@@ -287,6 +297,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
     id?: Prisma.StringWithAggregatesFilter<"Review"> | string;
     rating?: Prisma.IntWithAggregatesFilter<"Review"> | number;
     comment?: Prisma.StringWithAggregatesFilter<"Review"> | string;
+    tags?: Prisma.StringNullableListFilter<"Review">;
     isSpoiler?: Prisma.BoolWithAggregatesFilter<"Review"> | boolean;
     isApproved?: Prisma.BoolWithAggregatesFilter<"Review"> | boolean;
     likes?: Prisma.IntWithAggregatesFilter<"Review"> | number;
@@ -300,6 +311,7 @@ export type ReviewCreateInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -307,6 +319,7 @@ export type ReviewCreateInput = {
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutReviewsInput;
     movie: Prisma.MovieCreateNestedOneWithoutReviewsInput;
+    reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput;
     parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput;
     children?: Prisma.ReviewCreateNestedManyWithoutParentInput;
 };
@@ -314,6 +327,7 @@ export type ReviewUncheckedCreateInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -322,12 +336,14 @@ export type ReviewUncheckedCreateInput = {
     userId: string;
     movieId: string;
     parentId?: string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput;
     children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput;
 };
 export type ReviewUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -335,6 +351,7 @@ export type ReviewUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
     movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput;
+    reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput;
     parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput;
     children?: Prisma.ReviewUpdateManyWithoutParentNestedInput;
 };
@@ -342,6 +359,7 @@ export type ReviewUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -350,12 +368,14 @@ export type ReviewUncheckedUpdateInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     movieId?: Prisma.StringFieldUpdateOperationsInput | string;
     parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput;
     children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput;
 };
 export type ReviewCreateManyInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -369,6 +389,7 @@ export type ReviewUpdateManyMutationInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -379,6 +400,7 @@ export type ReviewUncheckedUpdateManyInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -404,6 +426,7 @@ export type ReviewCountOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     rating?: Prisma.SortOrder;
     comment?: Prisma.SortOrder;
+    tags?: Prisma.SortOrder;
     isSpoiler?: Prisma.SortOrder;
     isApproved?: Prisma.SortOrder;
     likes?: Prisma.SortOrder;
@@ -446,6 +469,10 @@ export type ReviewMinOrderByAggregateInput = {
 export type ReviewSumOrderByAggregateInput = {
     rating?: Prisma.SortOrder;
     likes?: Prisma.SortOrder;
+};
+export type ReviewScalarRelationFilter = {
+    is?: Prisma.ReviewWhereInput;
+    isNot?: Prisma.ReviewWhereInput;
 };
 export type ReviewCreateNestedManyWithoutUserInput = {
     create?: Prisma.XOR<Prisma.ReviewCreateWithoutUserInput, Prisma.ReviewUncheckedCreateWithoutUserInput> | Prisma.ReviewCreateWithoutUserInput[] | Prisma.ReviewUncheckedCreateWithoutUserInput[];
@@ -523,6 +550,9 @@ export type ReviewUncheckedUpdateManyWithoutMovieNestedInput = {
     updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutMovieInput | Prisma.ReviewUpdateManyWithWhereWithoutMovieInput[];
     deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[];
 };
+export type ReviewCreatetagsInput = {
+    set: string[];
+};
 export type ReviewCreateNestedOneWithoutChildrenInput = {
     create?: Prisma.XOR<Prisma.ReviewCreateWithoutChildrenInput, Prisma.ReviewUncheckedCreateWithoutChildrenInput>;
     connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutChildrenInput;
@@ -546,6 +576,10 @@ export type IntFieldUpdateOperationsInput = {
     decrement?: number;
     multiply?: number;
     divide?: number;
+};
+export type ReviewUpdatetagsInput = {
+    set?: string[];
+    push?: string | string[];
 };
 export type ReviewUpdateOneWithoutChildrenNestedInput = {
     create?: Prisma.XOR<Prisma.ReviewCreateWithoutChildrenInput, Prisma.ReviewUncheckedCreateWithoutChildrenInput>;
@@ -582,16 +616,30 @@ export type ReviewUncheckedUpdateManyWithoutParentNestedInput = {
     updateMany?: Prisma.ReviewUpdateManyWithWhereWithoutParentInput | Prisma.ReviewUpdateManyWithWhereWithoutParentInput[];
     deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[];
 };
+export type ReviewCreateNestedOneWithoutReviewLikesInput = {
+    create?: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>;
+    connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReviewLikesInput;
+    connect?: Prisma.ReviewWhereUniqueInput;
+};
+export type ReviewUpdateOneRequiredWithoutReviewLikesNestedInput = {
+    create?: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>;
+    connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutReviewLikesInput;
+    upsert?: Prisma.ReviewUpsertWithoutReviewLikesInput;
+    connect?: Prisma.ReviewWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutReviewLikesInput, Prisma.ReviewUpdateWithoutReviewLikesInput>, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>;
+};
 export type ReviewCreateWithoutUserInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     movie: Prisma.MovieCreateNestedOneWithoutReviewsInput;
+    reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput;
     parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput;
     children?: Prisma.ReviewCreateNestedManyWithoutParentInput;
 };
@@ -599,6 +647,7 @@ export type ReviewUncheckedCreateWithoutUserInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -606,6 +655,7 @@ export type ReviewUncheckedCreateWithoutUserInput = {
     updatedAt?: Date | string;
     movieId: string;
     parentId?: string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput;
     children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput;
 };
 export type ReviewCreateOrConnectWithoutUserInput = {
@@ -636,6 +686,7 @@ export type ReviewScalarWhereInput = {
     id?: Prisma.StringFilter<"Review"> | string;
     rating?: Prisma.IntFilter<"Review"> | number;
     comment?: Prisma.StringFilter<"Review"> | string;
+    tags?: Prisma.StringNullableListFilter<"Review">;
     isSpoiler?: Prisma.BoolFilter<"Review"> | boolean;
     isApproved?: Prisma.BoolFilter<"Review"> | boolean;
     likes?: Prisma.IntFilter<"Review"> | number;
@@ -649,12 +700,14 @@ export type ReviewCreateWithoutMovieInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutReviewsInput;
+    reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput;
     parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput;
     children?: Prisma.ReviewCreateNestedManyWithoutParentInput;
 };
@@ -662,6 +715,7 @@ export type ReviewUncheckedCreateWithoutMovieInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -669,6 +723,7 @@ export type ReviewUncheckedCreateWithoutMovieInput = {
     updatedAt?: Date | string;
     userId: string;
     parentId?: string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput;
     children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput;
 };
 export type ReviewCreateOrConnectWithoutMovieInput = {
@@ -696,6 +751,7 @@ export type ReviewCreateWithoutChildrenInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -703,12 +759,14 @@ export type ReviewCreateWithoutChildrenInput = {
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutReviewsInput;
     movie: Prisma.MovieCreateNestedOneWithoutReviewsInput;
+    reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput;
     parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput;
 };
 export type ReviewUncheckedCreateWithoutChildrenInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -717,6 +775,7 @@ export type ReviewUncheckedCreateWithoutChildrenInput = {
     userId: string;
     movieId: string;
     parentId?: string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput;
 };
 export type ReviewCreateOrConnectWithoutChildrenInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -726,6 +785,7 @@ export type ReviewCreateWithoutParentInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -733,12 +793,14 @@ export type ReviewCreateWithoutParentInput = {
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutReviewsInput;
     movie: Prisma.MovieCreateNestedOneWithoutReviewsInput;
+    reviewLikes?: Prisma.ReviewLikeCreateNestedManyWithoutReviewInput;
     children?: Prisma.ReviewCreateNestedManyWithoutParentInput;
 };
 export type ReviewUncheckedCreateWithoutParentInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -746,6 +808,7 @@ export type ReviewUncheckedCreateWithoutParentInput = {
     updatedAt?: Date | string;
     userId: string;
     movieId: string;
+    reviewLikes?: Prisma.ReviewLikeUncheckedCreateNestedManyWithoutReviewInput;
     children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput;
 };
 export type ReviewCreateOrConnectWithoutParentInput = {
@@ -769,6 +832,7 @@ export type ReviewUpdateWithoutChildrenInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -776,12 +840,14 @@ export type ReviewUpdateWithoutChildrenInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
     movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput;
+    reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput;
     parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutChildrenInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -790,6 +856,7 @@ export type ReviewUncheckedUpdateWithoutChildrenInput = {
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     movieId?: Prisma.StringFieldUpdateOperationsInput | string;
     parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput;
 };
 export type ReviewUpsertWithWhereUniqueWithoutParentInput = {
     where: Prisma.ReviewWhereUniqueInput;
@@ -804,10 +871,84 @@ export type ReviewUpdateManyWithWhereWithoutParentInput = {
     where: Prisma.ReviewScalarWhereInput;
     data: Prisma.XOR<Prisma.ReviewUpdateManyMutationInput, Prisma.ReviewUncheckedUpdateManyWithoutParentInput>;
 };
+export type ReviewCreateWithoutReviewLikesInput = {
+    id?: string;
+    rating?: number;
+    comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
+    isSpoiler?: boolean;
+    isApproved?: boolean;
+    likes?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutReviewsInput;
+    movie: Prisma.MovieCreateNestedOneWithoutReviewsInput;
+    parent?: Prisma.ReviewCreateNestedOneWithoutChildrenInput;
+    children?: Prisma.ReviewCreateNestedManyWithoutParentInput;
+};
+export type ReviewUncheckedCreateWithoutReviewLikesInput = {
+    id?: string;
+    rating?: number;
+    comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
+    isSpoiler?: boolean;
+    isApproved?: boolean;
+    likes?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    userId: string;
+    movieId: string;
+    parentId?: string | null;
+    children?: Prisma.ReviewUncheckedCreateNestedManyWithoutParentInput;
+};
+export type ReviewCreateOrConnectWithoutReviewLikesInput = {
+    where: Prisma.ReviewWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>;
+};
+export type ReviewUpsertWithoutReviewLikesInput = {
+    update: Prisma.XOR<Prisma.ReviewUpdateWithoutReviewLikesInput, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>;
+    create: Prisma.XOR<Prisma.ReviewCreateWithoutReviewLikesInput, Prisma.ReviewUncheckedCreateWithoutReviewLikesInput>;
+    where?: Prisma.ReviewWhereInput;
+};
+export type ReviewUpdateToOneWithWhereWithoutReviewLikesInput = {
+    where?: Prisma.ReviewWhereInput;
+    data: Prisma.XOR<Prisma.ReviewUpdateWithoutReviewLikesInput, Prisma.ReviewUncheckedUpdateWithoutReviewLikesInput>;
+};
+export type ReviewUpdateWithoutReviewLikesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
+    isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    likes?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
+    movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput;
+    parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput;
+    children?: Prisma.ReviewUpdateManyWithoutParentNestedInput;
+};
+export type ReviewUncheckedUpdateWithoutReviewLikesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    rating?: Prisma.IntFieldUpdateOperationsInput | number;
+    comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
+    isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    likes?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    userId?: Prisma.StringFieldUpdateOperationsInput | string;
+    movieId?: Prisma.StringFieldUpdateOperationsInput | string;
+    parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput;
+};
 export type ReviewCreateManyUserInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -820,12 +961,14 @@ export type ReviewUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput;
+    reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput;
     parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput;
     children?: Prisma.ReviewUpdateManyWithoutParentNestedInput;
 };
@@ -833,6 +976,7 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -840,12 +984,14 @@ export type ReviewUncheckedUpdateWithoutUserInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     movieId?: Prisma.StringFieldUpdateOperationsInput | string;
     parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput;
     children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -858,6 +1004,7 @@ export type ReviewCreateManyMovieInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -870,12 +1017,14 @@ export type ReviewUpdateWithoutMovieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
+    reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput;
     parent?: Prisma.ReviewUpdateOneWithoutChildrenNestedInput;
     children?: Prisma.ReviewUpdateManyWithoutParentNestedInput;
 };
@@ -883,6 +1032,7 @@ export type ReviewUncheckedUpdateWithoutMovieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -890,12 +1040,14 @@ export type ReviewUncheckedUpdateWithoutMovieInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput;
     children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutMovieInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -908,6 +1060,7 @@ export type ReviewCreateManyParentInput = {
     id?: string;
     rating?: number;
     comment: string;
+    tags?: Prisma.ReviewCreatetagsInput | string[];
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: number;
@@ -920,6 +1073,7 @@ export type ReviewUpdateWithoutParentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -927,12 +1081,14 @@ export type ReviewUpdateWithoutParentInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutReviewsNestedInput;
     movie?: Prisma.MovieUpdateOneRequiredWithoutReviewsNestedInput;
+    reviewLikes?: Prisma.ReviewLikeUpdateManyWithoutReviewNestedInput;
     children?: Prisma.ReviewUpdateManyWithoutParentNestedInput;
 };
 export type ReviewUncheckedUpdateWithoutParentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -940,12 +1096,14 @@ export type ReviewUncheckedUpdateWithoutParentInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     userId?: Prisma.StringFieldUpdateOperationsInput | string;
     movieId?: Prisma.StringFieldUpdateOperationsInput | string;
+    reviewLikes?: Prisma.ReviewLikeUncheckedUpdateManyWithoutReviewNestedInput;
     children?: Prisma.ReviewUncheckedUpdateManyWithoutParentNestedInput;
 };
 export type ReviewUncheckedUpdateManyWithoutParentInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
     rating?: Prisma.IntFieldUpdateOperationsInput | number;
     comment?: Prisma.StringFieldUpdateOperationsInput | string;
+    tags?: Prisma.ReviewUpdatetagsInput | string[];
     isSpoiler?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     isApproved?: Prisma.BoolFieldUpdateOperationsInput | boolean;
     likes?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -958,9 +1116,11 @@ export type ReviewUncheckedUpdateManyWithoutParentInput = {
  * Count Type ReviewCountOutputType
  */
 export type ReviewCountOutputType = {
+    reviewLikes: number;
     children: number;
 };
 export type ReviewCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    reviewLikes?: boolean | ReviewCountOutputTypeCountReviewLikesArgs;
     children?: boolean | ReviewCountOutputTypeCountChildrenArgs;
 };
 /**
@@ -975,6 +1135,12 @@ export type ReviewCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * ReviewCountOutputType without action
  */
+export type ReviewCountOutputTypeCountReviewLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ReviewLikeWhereInput;
+};
+/**
+ * ReviewCountOutputType without action
+ */
 export type ReviewCountOutputTypeCountChildrenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ReviewWhereInput;
 };
@@ -982,6 +1148,7 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id?: boolean;
     rating?: boolean;
     comment?: boolean;
+    tags?: boolean;
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: boolean;
@@ -992,6 +1159,7 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     parentId?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     movie?: boolean | Prisma.MovieDefaultArgs<ExtArgs>;
+    reviewLikes?: boolean | Prisma.Review$reviewLikesArgs<ExtArgs>;
     parent?: boolean | Prisma.Review$parentArgs<ExtArgs>;
     children?: boolean | Prisma.Review$childrenArgs<ExtArgs>;
     _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1000,6 +1168,7 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
     id?: boolean;
     rating?: boolean;
     comment?: boolean;
+    tags?: boolean;
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: boolean;
@@ -1016,6 +1185,7 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
     id?: boolean;
     rating?: boolean;
     comment?: boolean;
+    tags?: boolean;
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: boolean;
@@ -1032,6 +1202,7 @@ export type ReviewSelectScalar = {
     id?: boolean;
     rating?: boolean;
     comment?: boolean;
+    tags?: boolean;
     isSpoiler?: boolean;
     isApproved?: boolean;
     likes?: boolean;
@@ -1041,10 +1212,11 @@ export type ReviewSelectScalar = {
     movieId?: boolean;
     parentId?: boolean;
 };
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rating" | "comment" | "isSpoiler" | "isApproved" | "likes" | "createdAt" | "updatedAt" | "userId" | "movieId" | "parentId", ExtArgs["result"]["review"]>;
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rating" | "comment" | "tags" | "isSpoiler" | "isApproved" | "likes" | "createdAt" | "updatedAt" | "userId" | "movieId" | "parentId", ExtArgs["result"]["review"]>;
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     movie?: boolean | Prisma.MovieDefaultArgs<ExtArgs>;
+    reviewLikes?: boolean | Prisma.Review$reviewLikesArgs<ExtArgs>;
     parent?: boolean | Prisma.Review$parentArgs<ExtArgs>;
     children?: boolean | Prisma.Review$childrenArgs<ExtArgs>;
     _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1064,6 +1236,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     objects: {
         user: Prisma.$UserPayload<ExtArgs>;
         movie: Prisma.$MoviePayload<ExtArgs>;
+        reviewLikes: Prisma.$ReviewLikePayload<ExtArgs>[];
         parent: Prisma.$ReviewPayload<ExtArgs> | null;
         children: Prisma.$ReviewPayload<ExtArgs>[];
     };
@@ -1071,6 +1244,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
         id: string;
         rating: number;
         comment: string;
+        tags: string[];
         isSpoiler: boolean;
         isApproved: boolean;
         likes: number;
@@ -1410,6 +1584,7 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
     readonly [Symbol.toStringTag]: "PrismaPromise";
     user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     movie<T extends Prisma.MovieDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MovieDefaultArgs<ExtArgs>>): Prisma.Prisma__MovieClient<runtime.Types.Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    reviewLikes<T extends Prisma.Review$reviewLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$reviewLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     parent<T extends Prisma.Review$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$parentArgs<ExtArgs>>): Prisma.Prisma__ReviewClient<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     children<T extends Prisma.Review$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
@@ -1440,6 +1615,7 @@ export interface ReviewFieldRefs {
     readonly id: Prisma.FieldRef<"Review", 'String'>;
     readonly rating: Prisma.FieldRef<"Review", 'Int'>;
     readonly comment: Prisma.FieldRef<"Review", 'String'>;
+    readonly tags: Prisma.FieldRef<"Review", 'String[]'>;
     readonly isSpoiler: Prisma.FieldRef<"Review", 'Boolean'>;
     readonly isApproved: Prisma.FieldRef<"Review", 'Boolean'>;
     readonly likes: Prisma.FieldRef<"Review", 'Int'>;
@@ -1825,6 +2001,29 @@ export type ReviewDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
      * Limit how many Reviews to delete.
      */
     limit?: number;
+};
+/**
+ * Review.reviewLikes
+ */
+export type Review$reviewLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReviewLike
+     */
+    select?: Prisma.ReviewLikeSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ReviewLike
+     */
+    omit?: Prisma.ReviewLikeOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ReviewLikeInclude<ExtArgs> | null;
+    where?: Prisma.ReviewLikeWhereInput;
+    orderBy?: Prisma.ReviewLikeOrderByWithRelationInput | Prisma.ReviewLikeOrderByWithRelationInput[];
+    cursor?: Prisma.ReviewLikeWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ReviewLikeScalarFieldEnum | Prisma.ReviewLikeScalarFieldEnum[];
 };
 /**
  * Review.parent

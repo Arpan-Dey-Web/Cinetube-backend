@@ -470,9 +470,6 @@ export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     updateMany?: Prisma.AccountUpdateManyWithWhereWithoutUserInput | Prisma.AccountUpdateManyWithWhereWithoutUserInput[];
     deleteMany?: Prisma.AccountScalarWhereInput | Prisma.AccountScalarWhereInput[];
 };
-export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null;
-};
 export type AccountCreateWithoutUserInput = {
     id: string;
     accountId: string;

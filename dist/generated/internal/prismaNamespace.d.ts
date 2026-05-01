@@ -234,8 +234,10 @@ export declare const ModelName: {
     readonly User: "User";
     readonly Movie: "Movie";
     readonly Review: "Review";
+    readonly ReviewLike: "ReviewLike";
     readonly Watchlist: "Watchlist";
     readonly Purchase: "Purchase";
+    readonly Subscription: "Subscription";
     readonly Session: "Session";
     readonly Account: "Account";
     readonly Verification: "Verification";
@@ -251,7 +253,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "movie" | "review" | "watchlist" | "purchase" | "session" | "account" | "verification";
+        modelProps: "user" | "movie" | "review" | "reviewLike" | "watchlist" | "purchase" | "subscription" | "session" | "account" | "verification";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -477,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        ReviewLike: {
+            payload: Prisma.$ReviewLikePayload<ExtArgs>;
+            fields: Prisma.ReviewLikeFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.ReviewLikeFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.ReviewLikeFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                findFirst: {
+                    args: Prisma.ReviewLikeFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.ReviewLikeFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                findMany: {
+                    args: Prisma.ReviewLikeFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>[];
+                };
+                create: {
+                    args: Prisma.ReviewLikeCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                createMany: {
+                    args: Prisma.ReviewLikeCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.ReviewLikeCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>[];
+                };
+                delete: {
+                    args: Prisma.ReviewLikeDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                update: {
+                    args: Prisma.ReviewLikeUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.ReviewLikeDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.ReviewLikeUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.ReviewLikeUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>[];
+                };
+                upsert: {
+                    args: Prisma.ReviewLikeUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewLikePayload>;
+                };
+                aggregate: {
+                    args: Prisma.ReviewLikeAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateReviewLike>;
+                };
+                groupBy: {
+                    args: Prisma.ReviewLikeGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ReviewLikeGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.ReviewLikeCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ReviewLikeCountAggregateOutputType> | number;
+                };
+            };
+        };
         Watchlist: {
             payload: Prisma.$WatchlistPayload<ExtArgs>;
             fields: Prisma.WatchlistFieldRefs;
@@ -622,6 +698,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.PurchaseCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.PurchaseCountAggregateOutputType> | number;
+                };
+            };
+        };
+        Subscription: {
+            payload: Prisma.$SubscriptionPayload<ExtArgs>;
+            fields: Prisma.SubscriptionFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.SubscriptionFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.SubscriptionFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                findFirst: {
+                    args: Prisma.SubscriptionFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.SubscriptionFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                findMany: {
+                    args: Prisma.SubscriptionFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>[];
+                };
+                create: {
+                    args: Prisma.SubscriptionCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                createMany: {
+                    args: Prisma.SubscriptionCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.SubscriptionCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>[];
+                };
+                delete: {
+                    args: Prisma.SubscriptionDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                update: {
+                    args: Prisma.SubscriptionUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.SubscriptionDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.SubscriptionUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.SubscriptionUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>[];
+                };
+                upsert: {
+                    args: Prisma.SubscriptionUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$SubscriptionPayload>;
+                };
+                aggregate: {
+                    args: Prisma.SubscriptionAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateSubscription>;
+                };
+                groupBy: {
+                    args: Prisma.SubscriptionGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.SubscriptionGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.SubscriptionCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.SubscriptionCountAggregateOutputType> | number;
                 };
             };
         };
@@ -886,8 +1036,9 @@ export declare const UserScalarFieldEnum: {
     readonly name: "name";
     readonly email: "email";
     readonly password: "password";
+    readonly phone: "phone";
+    readonly address: "address";
     readonly role: "role";
-    readonly contentStatus: "contentStatus";
     readonly emailVerified: "emailVerified";
     readonly isBlocked: "isBlocked";
     readonly image: "image";
@@ -910,7 +1061,6 @@ export declare const MovieScalarFieldEnum: {
     readonly trailerUrl: "trailerUrl";
     readonly streamingUrl: "streamingUrl";
     readonly platform: "platform";
-    readonly status: "status";
     readonly price: "price";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
@@ -922,6 +1072,7 @@ export declare const ReviewScalarFieldEnum: {
     readonly id: "id";
     readonly rating: "rating";
     readonly comment: "comment";
+    readonly tags: "tags";
     readonly isSpoiler: "isSpoiler";
     readonly isApproved: "isApproved";
     readonly likes: "likes";
@@ -932,10 +1083,18 @@ export declare const ReviewScalarFieldEnum: {
     readonly parentId: "parentId";
 };
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum];
+export declare const ReviewLikeScalarFieldEnum: {
+    readonly id: "id";
+    readonly reviewId: "reviewId";
+    readonly userId: "userId";
+};
+export type ReviewLikeScalarFieldEnum = (typeof ReviewLikeScalarFieldEnum)[keyof typeof ReviewLikeScalarFieldEnum];
 export declare const WatchlistScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
     readonly movieId: "movieId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type WatchlistScalarFieldEnum = (typeof WatchlistScalarFieldEnum)[keyof typeof WatchlistScalarFieldEnum];
 export declare const PurchaseScalarFieldEnum: {
@@ -946,8 +1105,22 @@ export declare const PurchaseScalarFieldEnum: {
     readonly movieId: "movieId";
     readonly amount: "amount";
     readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum];
+export declare const SubscriptionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly status: "status";
+    readonly plan: "plan";
+    readonly startDate: "startDate";
+    readonly endDate: "endDate";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly stripeCustomerId: "stripeCustomerId";
+    readonly stripeSubscriptionId: "stripeSubscriptionId";
+};
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum];
 export declare const SessionScalarFieldEnum: {
     readonly id: "id";
     readonly expiresAt: "expiresAt";
@@ -1019,14 +1192,6 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>;
 /**
- * Reference to a field of type 'ContentStatus'
- */
-export type EnumContentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentStatus'>;
-/**
- * Reference to a field of type 'ContentStatus[]'
- */
-export type ListEnumContentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentStatus[]'>;
-/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>;
@@ -1054,6 +1219,22 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>;
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>;
+/**
+ * Reference to a field of type 'SubscriptionStatus'
+ */
+export type EnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus'>;
+/**
+ * Reference to a field of type 'SubscriptionStatus[]'
+ */
+export type ListEnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubscriptionStatus[]'>;
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1151,8 +1332,10 @@ export type GlobalOmitConfig = {
     user?: Prisma.UserOmit;
     movie?: Prisma.MovieOmit;
     review?: Prisma.ReviewOmit;
+    reviewLike?: Prisma.ReviewLikeOmit;
     watchlist?: Prisma.WatchlistOmit;
     purchase?: Prisma.PurchaseOmit;
+    subscription?: Prisma.SubscriptionOmit;
     session?: Prisma.SessionOmit;
     account?: Prisma.AccountOmit;
     verification?: Prisma.VerificationOmit;

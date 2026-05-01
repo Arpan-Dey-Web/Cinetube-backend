@@ -149,6 +149,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.reviewLike`: Exposes CRUD operations for the **ReviewLike** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ReviewLikes
+      * const reviewLikes = await prisma.reviewLike.findMany()
+      * ```
+      */
+    get reviewLike(): Prisma.ReviewLikeDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.watchlist`: Exposes CRUD operations for the **Watchlist** model.
       * Example usage:
       * ```ts
@@ -168,6 +179,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get purchase(): Prisma.PurchaseDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.subscription`: Exposes CRUD operations for the **Subscription** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Subscriptions
+      * const subscriptions = await prisma.subscription.findMany()
+      * ```
+      */
+    get subscription(): Prisma.SubscriptionDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
     /**

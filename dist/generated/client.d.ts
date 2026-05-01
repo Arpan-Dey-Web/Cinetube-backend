@@ -37,6 +37,11 @@ export type Movie = Prisma.MovieModel;
  */
 export type Review = Prisma.ReviewModel;
 /**
+ * Model ReviewLike
+ *
+ */
+export type ReviewLike = Prisma.ReviewLikeModel;
+/**
  * Model Watchlist
  *
  */
@@ -46,6 +51,11 @@ export type Watchlist = Prisma.WatchlistModel;
  *
  */
 export type Purchase = Prisma.PurchaseModel;
+/**
+ * Model Subscription
+ *
+ */
+export type Subscription = Prisma.SubscriptionModel;
 /**
  * Model Session
  *

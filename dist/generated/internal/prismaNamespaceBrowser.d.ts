@@ -29,8 +29,10 @@ export declare const ModelName: {
     readonly User: "User";
     readonly Movie: "Movie";
     readonly Review: "Review";
+    readonly ReviewLike: "ReviewLike";
     readonly Watchlist: "Watchlist";
     readonly Purchase: "Purchase";
+    readonly Subscription: "Subscription";
     readonly Session: "Session";
     readonly Account: "Account";
     readonly Verification: "Verification";
@@ -48,8 +50,9 @@ export declare const UserScalarFieldEnum: {
     readonly name: "name";
     readonly email: "email";
     readonly password: "password";
+    readonly phone: "phone";
+    readonly address: "address";
     readonly role: "role";
-    readonly contentStatus: "contentStatus";
     readonly emailVerified: "emailVerified";
     readonly isBlocked: "isBlocked";
     readonly image: "image";
@@ -72,7 +75,6 @@ export declare const MovieScalarFieldEnum: {
     readonly trailerUrl: "trailerUrl";
     readonly streamingUrl: "streamingUrl";
     readonly platform: "platform";
-    readonly status: "status";
     readonly price: "price";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
@@ -84,6 +86,7 @@ export declare const ReviewScalarFieldEnum: {
     readonly id: "id";
     readonly rating: "rating";
     readonly comment: "comment";
+    readonly tags: "tags";
     readonly isSpoiler: "isSpoiler";
     readonly isApproved: "isApproved";
     readonly likes: "likes";
@@ -94,10 +97,18 @@ export declare const ReviewScalarFieldEnum: {
     readonly parentId: "parentId";
 };
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum];
+export declare const ReviewLikeScalarFieldEnum: {
+    readonly id: "id";
+    readonly reviewId: "reviewId";
+    readonly userId: "userId";
+};
+export type ReviewLikeScalarFieldEnum = (typeof ReviewLikeScalarFieldEnum)[keyof typeof ReviewLikeScalarFieldEnum];
 export declare const WatchlistScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
     readonly movieId: "movieId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type WatchlistScalarFieldEnum = (typeof WatchlistScalarFieldEnum)[keyof typeof WatchlistScalarFieldEnum];
 export declare const PurchaseScalarFieldEnum: {
@@ -108,8 +119,22 @@ export declare const PurchaseScalarFieldEnum: {
     readonly movieId: "movieId";
     readonly amount: "amount";
     readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
 };
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum];
+export declare const SubscriptionScalarFieldEnum: {
+    readonly id: "id";
+    readonly userId: "userId";
+    readonly status: "status";
+    readonly plan: "plan";
+    readonly startDate: "startDate";
+    readonly endDate: "endDate";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+    readonly stripeCustomerId: "stripeCustomerId";
+    readonly stripeSubscriptionId: "stripeSubscriptionId";
+};
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum];
 export declare const SessionScalarFieldEnum: {
     readonly id: "id";
     readonly expiresAt: "expiresAt";

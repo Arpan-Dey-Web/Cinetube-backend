@@ -15,4 +15,16 @@ export const ContentStatus = {
     FREE: 'FREE',
     PREMIUM: 'PREMIUM'
 };
+export const SubscriptionStatus = {
+    ACTIVE: 'ACTIVE',
+    EXPIRED: 'EXPIRED',
+    CANCELED: 'CANCELED',
+    PAST_DUE: 'PAST_DUE'
+};
+export const PaymentStatus = {
+    PENDING: 'PENDING',
+    PAID: 'PAID',
+    FAILED: 'FAILED',
+    REFUNDED: 'REFUNDED'
+};
 //# sourceMappingURL=enums.js.map

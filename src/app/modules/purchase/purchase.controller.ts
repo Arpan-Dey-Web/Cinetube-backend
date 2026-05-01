@@ -4,8 +4,7 @@ import { sendResponse } from "../../../utils/sendResponse";
 import { PurchaseService } from "./purchase.service";
 
 const getMyPurchases = catchAsync(async (req: Request, res: Response) => {
-  // Get the ID from the IRequestUser attached by auth middleware
-  const userId = req.user.id;
+  const userId = req.user!.id;
 
   const result = await PurchaseService.getMyPurchasesFromDB(userId);
 
@@ -20,7 +19,7 @@ const getMyPurchases = catchAsync(async (req: Request, res: Response) => {
 // 2. New: Create a Manual Purchase (If not using Stripe Webhooks only)
 const createPurchase = catchAsync(async (req: Request, res: Response) => {
     const { movieId, amount, transactionId } = req.body;
-    const userId = req.user.id;
+    const userId = req.user!.id;
   
     const result = await PurchaseService.createPurchaseInDB(
       userId,
@@ -40,8 +39,8 @@ const createPurchase = catchAsync(async (req: Request, res: Response) => {
   // 3. New: Verify if user can watch a movie
   const verifyAccess = catchAsync(async (req: Request, res: Response) => {
     const { movieId } = req.params;
-    const userId = req.user.id;
-    const userRole = req.user.role;
+    const userId = req.user!.id;
+    const userRole = req.user!.role;
   
     const hasAccess = await PurchaseService.checkMovieAccess(
         userId,

@@ -1,40 +1,89 @@
+import { Prisma } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
+import { getContentStatus, getMovieStatus, withMovieStatus } from "../../../utils/access";
 
-const createPurchaseInDB = async (userId: string, movieId: string, amount: number, transactionId: string) => {
-  return await prisma.$transaction(async (tx) => {
-    // 1. Record the transaction
-    const purchase = await tx.purchase.create({
+const createPurchaseInDB = async (
+  userId: string,
+  movieId: string,
+  amount: number,
+  transactionId: string,
+) => {
+  const existing = await prisma.purchase.findFirst({
+    where: {
+      OR: [{ transactionId }, { userId, movieId }],
+    },
+  });
+
+  if (existing) {
+    return existing;
+  }
+
+  try {
+    return await prisma.purchase.create({
       data: {
         userId,
         movieId,
         amount,
         transactionId,
-        paymentStatus: "completed",
+        paymentStatus: "PAID",
       },
     });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      const purchase = await prisma.purchase.findFirst({
+        where: {
+          OR: [{ transactionId }, { userId, movieId }],
+        },
+      });
 
-    // 2. If the user bought a subscription, update their role to PREMIUM
-    // (Optional logic based on your Pricing requirements)
-    await tx.user.update({
-      where: { id: userId },
-      data: { contentStatus: "PREMIUM" },
-    });
+      if (purchase) {
+        return purchase;
+      }
+    }
 
-    return purchase;
-  });
+    throw error;
+  }
 };
 
-const checkMovieAccess = async (userId: string, userRole: string, movieId: string) => {
-  // 1. Admins get a free pass
+const checkMovieAccess = async (
+  userId: string,
+  userRole: string,
+  movieId: string,
+) => {
   if (userRole === "ADMIN") return true;
 
-  const movie = await prisma.movie.findUnique({ where: { id: movieId } });
+  const [movie, user] = await Promise.all([
+    prisma.movie.findUnique({
+      where: { id: movieId },
+      select: {
+        id: true,
+        price: true,
+      },
+    }),
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        subscription: {
+          select: {
+            status: true,
+            endDate: true,
+          },
+        },
+      },
+    }),
+  ]);
+
   if (!movie) throw new Error("Movie not found");
 
-  // 2. If movie is free, everyone can watch
-  if (movie.status === "FREE") return true;
+  if (getMovieStatus(movie.price) === "FREE") return true;
 
-  // 3. Check for specific purchase
+  if (getContentStatus(user?.subscription) === "PREMIUM") {
+    return true;
+  }
+
   const purchase = await prisma.purchase.findUnique({
     where: {
       userId_movieId: { userId, movieId },
@@ -44,12 +93,10 @@ const checkMovieAccess = async (userId: string, userRole: string, movieId: strin
   return !!purchase;
 };
 
-
-
 const getMyPurchasesFromDB = async (userId: string) => {
-  return await prisma.purchase.findMany({
-    where: { 
-      userId 
+  const purchases = await prisma.purchase.findMany({
+    where: {
+      userId,
     },
     include: {
       movie: {
@@ -59,17 +106,24 @@ const getMyPurchasesFromDB = async (userId: string) => {
           posterUrl: true,
           year: true,
           genres: true,
-        }
-      }
+          streamingUrl: true,
+          price: true,
+        },
+      },
     },
-    orderBy: { 
-      createdAt: 'desc' 
-    }
+    orderBy: {
+      createdAt: "desc",
+    },
   });
+
+  return purchases.map((purchase) => ({
+    ...purchase,
+    movie: withMovieStatus(purchase.movie),
+  }));
 };
+
 export const PurchaseService = {
   createPurchaseInDB,
   checkMovieAccess,
-  getMyPurchasesFromDB
-  
+  getMyPurchasesFromDB,
 };

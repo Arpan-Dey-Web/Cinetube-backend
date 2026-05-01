@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { PurchaseController } from "./purchase.controller";
 import { auth } from "../../middleware/auth";
-
+import { validateRequest } from "../../middleware/validateRequest";
+import { PurchaseValidation } from "./purchase.validation";
 
 const purchaseRouter = Router();
 
@@ -23,6 +24,7 @@ purchaseRouter.get(
   purchaseRouter.post(
     "/create",
     auth("USER", "ADMIN"),
+    validateRequest(PurchaseValidation.createPurchaseSchema),
     PurchaseController.createPurchase
   );
 

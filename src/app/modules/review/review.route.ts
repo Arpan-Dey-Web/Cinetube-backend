@@ -1,50 +1,60 @@
 import { Router } from "express";
-import { ReviewController } from "./review.controller";
-import { auth } from "../../middleware/auth";
 import { Role } from "../../../enums/enum";
+import { auth, optionalAuth } from "../../middleware/auth";
 import { validateRequest } from "../../middleware/validateRequest";
+import { ReviewController } from "./review.controller";
 import { ReviewValidation } from "./review.validation";
 
 const reviewRouter = Router();
 
-// 1. Public: Get reviews for a movie
-reviewRouter.get("/:movieId", ReviewController.getMovieReviews);
+reviewRouter.get("/featured", ReviewController.getFeaturedReviews);
 
-// 2. User: Create a new review
+reviewRouter.get(
+  "/",
+  optionalAuth(),
+  validateRequest(ReviewValidation.getReviewsQuerySchema),
+  ReviewController.getReviews,
+);
+
 reviewRouter.post(
   "/",
-  auth(Role.User),
+  auth(Role.User, Role.Admin),
   validateRequest(ReviewValidation.createReviewSchema),
   ReviewController.createReview,
 );
 
-
 reviewRouter.patch(
   "/my-review/:id",
-  auth(Role.User),
+  auth(Role.User, Role.Admin),
   validateRequest(ReviewValidation.updateReviewSchema),
-  ReviewController.updateMyReview
+  ReviewController.updateMyReview,
 );
 
-// 4. User: Delete own review
 reviewRouter.delete(
   "/my-review/:id",
-  auth(Role.User),
-  ReviewController.deleteMyReview
+  auth(Role.User, Role.Admin),
+  ReviewController.deleteMyReview,
 );
 
-// 5. User: Toggle Like/Unlike on a review
 reviewRouter.post(
   "/like/:id",
-  auth(Role.User),
-  ReviewController.toggleLike
+  auth(Role.User, Role.Admin),
+  ReviewController.toggleLike,
 );
 
-// 6. Admin: Moderate/Approve/Unpublish
 reviewRouter.patch(
   "/moderate/:id",
   auth(Role.Admin),
-  ReviewController.toggleApproval
+  validateRequest(ReviewValidation.moderateReviewSchema),
+  ReviewController.toggleApproval,
 );
+
+reviewRouter.delete(
+  "/moderate/:id",
+  auth(Role.Admin),
+  ReviewController.deleteReviewByAdmin,
+);
+
+reviewRouter.get("/:movieId", optionalAuth(), ReviewController.getMovieReviews);
 
 export default reviewRouter;

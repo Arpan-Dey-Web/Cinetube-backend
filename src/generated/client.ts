@@ -72,6 +72,11 @@ export type Watchlist = Prisma.WatchlistModel
  */
 export type Purchase = Prisma.PurchaseModel
 /**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel
+/**
  * Model Session
  * 
  */

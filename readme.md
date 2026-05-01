@@ -261,13 +261,13 @@ npm run dev
 
 ---
 
-## 🧪 Testing Admin Access
+## 🧪 Testing Admin & User Access
 
-User Email      : [user@cinetube.com]
-User Password   : user123
+User Email      : user@cinetube.com
+User Password   : @User-123
 
-Admin Email     : [admin@cinetube.com]
-Admin Password  : admin123
+Admin Email     : admin@cinetube.com
+Admin Password  : @Admin-123
 
 ---
 

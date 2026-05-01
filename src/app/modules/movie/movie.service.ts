@@ -1,175 +1,115 @@
-import { Movie } from "../../../generated/client";
 import { prisma } from "../../../lib/prisma";
+import { Prisma, Movie } from "../../../generated/client";
+import { withMovieStatus } from "../../../utils/access";
 
-const getAllMoviesFromDB = async (query: Record<string, any>, userRole?: string) => {
-  const { 
-    searchTerm, 
-    genres, 
-    platform, 
-    status, 
-    page = 1, 
-    limit = 10, 
-    sortBy = 'createdAt', 
-    sortOrder = 'desc' 
-  } = query;
 
-  const skip = (Number(page) - 1) * Number(limit);
-  const take = Number(limit);
+const getAllMoviesFromDB = async (
+  query: Record<string, unknown>,
+  userRole?: string,
+) => {
+  const page = Number(query.page || 1);
+  const limit = Number(query.limit || 10);
+  const skip = (page - 1) * limit;
 
-  // 1. DYNAMIC Visibility Logic
-  // We start with an empty object.
-  const whereConditions: any = {};
+  const where: Prisma.MovieWhereInput = {};
 
-  // If the user is NOT an Admin, they are restricted to ONLY published movies.
-  // If they ARE an Admin, this condition is skipped, allowing them to see drafts.
   if (userRole !== "ADMIN") {
-    whereConditions.isPublished = true;
+    where.isPublished = true;
   }
 
-  // 2. Global Search
-  if (searchTerm) {
-    whereConditions.OR = [
-      { title: { contains: searchTerm, mode: 'insensitive' } },
-      { director: { contains: searchTerm, mode: 'insensitive' } },
-      { cast: { hasSome: [searchTerm] } }, 
-    ];
+  if (query.status === "FREE") {
+    where.price = { lte: 0 };
   }
 
-  // 3. Filters
-  if (genres) {
-    whereConditions.genres = { has: genres };
+  if (query.status === "PREMIUM") {
+    where.price = { gt: 0 };
   }
-  if (platform) whereConditions.platform = platform;
-  if (status) whereConditions.status = status;
 
-  // 4. Execution
-  const [result, total] = await Promise.all([
+  const [data, total] = await Promise.all([
     prisma.movie.findMany({
-      where: whereConditions,
+      where,
       skip,
-      take,
-      orderBy: { [sortBy]: sortOrder },
+      take: limit,
+      orderBy: { createdAt: "desc" },
     }),
-    prisma.movie.count({ where: whereConditions }),
+    prisma.movie.count({ where }),
   ]);
-
-  const totalPages = Math.ceil(total / take);
 
   return {
     meta: {
-      page: Number(page),
-      limit: take,
+      page,
+      limit,
       total,
-      totalPages,
+      totalPages: Math.ceil(total / limit),
     },
-    data: result,
+    data: data.map((movie) => withMovieStatus(movie)),
   };
 };
 
+
 const getSingleMovieFromDB = async (id: string) => {
-  return await prisma.movie.findUnique({
+  return prisma.movie.findUnique({
     where: { id },
     include: {
       reviews: {
         where: { isApproved: true },
-        include: { 
-          user: { 
-            select: { 
-              name: true, 
-              image: true, 
-              role: true 
-            } 
-          } 
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
         },
-        orderBy: {
-          createdAt: 'desc' 
-        }
-      }
-    }
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 };
 
 
+const getMovieGenresFromDB = async () => {
+  const movies = await prisma.movie.findMany({
+    where: { isPublished: true },
+    select: { genres: true },
+  });
 
-const createMovieInDB = async (movieData: Partial<Movie>): Promise<Movie> => {
-    const {
-      title,
-      description,
-      director,
-      cast,
-      year,
-      duration,
-      genres,
-      posterUrl,
-      backdropUrl,
-      trailerUrl,
-      streamingUrl,
-      platform,
-      status,
-      price,
-      isTrending,
-    } = movieData;
-  
-    const result = await prisma.movie.create({
-      data: {
-        title: title!,
-        description: description!,
-        director: director!,
-        cast: Array.isArray(cast) ? cast : cast ? [cast as string] : [],
-        genres: Array.isArray(genres) ? genres : genres ? [genres as string] : [],
-        year: year!,
-        duration: duration!,
-        posterUrl: posterUrl!,
-        backdropUrl: backdropUrl || "", 
-        trailerUrl: trailerUrl || "",
-        streamingUrl: streamingUrl || null,
-        platform: platform || "Flicks Original",
-        status: status || "FREE",
-        price: price ? Number(price) : 0,
-        isPublished: movieData.isPublished ?? false, 
-        isTrending: isTrending || false,
-      },
+  const map: Record<string, number> = {};
+
+  movies.forEach((movie) => {
+    movie.genres.forEach((g) => {
+      map[g] = (map[g] || 0) + 1;
     });
-  
-    return result;
-  };
-  
+  });
+
+  return Object.entries(map).map(([name, count]) => ({
+    name,
+    count,
+  }));
+};
 
 
-  const updateMovieInDB = async (id: string, payload: Partial<Movie>): Promise<Movie> => {
-    // Check if movie exists first (Professional touch)
-    const isExist = await prisma.movie.findUnique({ where: { id } });
-    if (!isExist) {
-      throw new Error("Movie not found!");
-    }
-    if (payload.price) payload.price = Number(payload.price);
-  
-    // Prepare arrays if they are being updated
-    const updateData = { ...payload };
-  
-    if (payload.cast) {
-      updateData.cast = Array.isArray(payload.cast) ? payload.cast : [payload.cast as string];
-    }
-    if (payload.genres) {
-      updateData.genres = Array.isArray(payload.genres) ? payload.genres : [payload.genres as string];
-    }
-  
-    const result = await prisma.movie.update({
-      where: { id },
-      data: updateData,
-    });
-  
-    return result;
-  };
+const createMovieInDB = async (payload: any) => {
+  return prisma.movie.create({
+    data: {
+      ...payload,
+      price: Number(payload.price || 0),
+    },
+  });
+};
 
 
-const deleteMovieFromDB = async (id: string): Promise<Movie> => {
-  const isExist = await prisma.movie.findUnique({ where: { id } });
-  if (!isExist) {
-    throw new Error("Movie not found!");
-  }
+const updateMovieInDB = async (id: string, payload: any) => {
+  return prisma.movie.update({
+    where: { id },
+    data: payload,
+  });
+};
 
-  return await prisma.movie.delete({
+
+const deleteMovieFromDB = async (id: string) => {
+  return prisma.movie.delete({
     where: { id },
   });
 };
@@ -177,6 +117,7 @@ const deleteMovieFromDB = async (id: string): Promise<Movie> => {
 export const MovieService = {
   getAllMoviesFromDB,
   getSingleMovieFromDB,
+  getMovieGenresFromDB,
   createMovieInDB,
   updateMovieInDB,
   deleteMovieFromDB,

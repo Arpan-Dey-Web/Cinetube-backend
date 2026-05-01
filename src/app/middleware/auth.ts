@@ -1,28 +1,63 @@
 import { NextFunction, Request, Response } from "express";
 import { auth as betterAuth } from "../../lib/auth";
+import { prisma } from "../../lib/prisma";
 import { catchAsync } from "../../utils/catchAsync";
+import { getContentStatus } from "../../utils/access";
 import { IRequestUser } from "../../types/types";
 
+const getSessionUser = async (req: Request) => {
+  const session = await betterAuth.api.getSession({
+    headers: req.headers,
+  });
+
+  if (!session?.user?.id) {
+    return null;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      isBlocked: true,
+      image: true,
+      emailVerified: true,
+      createdAt: true,
+      updatedAt: true,
+      subscription: {
+        select: {
+          status: true,
+          endDate: true,
+        },
+      },
+    },
+  });
+
+  if (!user) {
+    return null;
+  }
+
+  const { subscription, ...userFields } = user;
+
+  return {
+    ...userFields,
+    contentStatus: getContentStatus(subscription),
+  } satisfies IRequestUser;
+};
 
 export const auth = (...roles: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // 1. Get the session
-    const session = await betterAuth.api.getSession({
-      headers: req.headers,
-    });
+    const user = await getSessionUser(req);
 
-    // 2. Validate session existence
-    if (!session || !session.user) {
+    if (!user) {
       return res.status(401).json({
         success: false,
         message: "Authentication failed. Please log in.",
       });
     }
 
-    // 3. Cast to your custom interface
-    const user = session.user as unknown as IRequestUser;
-
-    // 4. Blocked check
     if (user.isBlocked) {
       return res.status(403).json({
         success: false,
@@ -41,8 +76,19 @@ export const auth = (...roles: string[]) => {
       }
     }
 
-    // 6. Attach to Request object
     req.user = user;
+    next();
+  });
+};
+
+export const optionalAuth = () => {
+  return catchAsync(async (req: Request, _res: Response, next: NextFunction) => {
+    const user = await getSessionUser(req);
+
+    if (user && !user.isBlocked) {
+      req.user = user;
+    }
+
     next();
   });
 };

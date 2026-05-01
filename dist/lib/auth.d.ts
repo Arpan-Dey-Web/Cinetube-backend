@@ -13,7 +13,7 @@ export declare const auth: import("better-auth").Auth<{
             };
         };
     };
-    baseURL: string | undefined;
+    baseURL: string;
     trustedOrigins: string[];
     emailAndPassword: {
         enabled: true;
@@ -36,18 +36,18 @@ export declare const auth: import("better-auth").Auth<{
                 name: string;
                 attributes: {
                     httpOnly: true;
-                    secure: true;
-                    sameSite: "none";
-                    partitioned: true;
+                    secure: boolean;
+                    sameSite: "none" | "lax";
+                    partitioned: boolean;
                 };
             };
             state: {
                 name: string;
                 attributes: {
                     httpOnly: true;
-                    secure: true;
-                    sameSite: "none";
-                    partitioned: true;
+                    secure: boolean;
+                    sameSite: "none" | "lax";
+                    partitioned: boolean;
                 };
             };
         };

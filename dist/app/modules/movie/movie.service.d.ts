@@ -1,79 +1,143 @@
-import { Movie } from "../../../generated/client";
 export declare const MovieService: {
-    getAllMoviesFromDB: (query: Record<string, any>) => Promise<{
+    getAllMoviesFromDB: (query: Record<string, unknown>, userRole?: string) => Promise<{
         meta: {
             page: number;
             limit: number;
             total: number;
             totalPages: number;
         };
-        data: {
+        data: ({
             id: string;
             createdAt: Date;
             updatedAt: Date;
+            duration: string;
+            year: string;
+            rating: number;
+            isPublished: boolean;
             title: string;
             description: string;
             director: string;
             cast: string[];
-            year: string;
-            duration: string;
-            rating: number;
             genres: string[];
             posterUrl: string;
             backdropUrl: string;
             trailerUrl: string;
             streamingUrl: string | null;
             platform: string | null;
-            status: import("../../../generated/enums").ContentStatus;
             price: number;
-            isPublished: boolean;
             isTrending: boolean;
-        }[];
+        } & {
+            status: "FREE" | "PREMIUM";
+        })[];
     }>;
     getSingleMovieFromDB: (id: string) => Promise<({
         reviews: ({
             user: {
+                id: string;
                 name: string;
                 image: string | null;
-                role: import("../../../generated/enums").Role;
             };
         } & {
             id: string;
             createdAt: Date;
             updatedAt: Date;
-            rating: number;
             userId: string;
-            movieId: string;
-            isApproved: boolean;
-            likes: number;
-            comment: string;
-            isSpoiler: boolean;
             parentId: string | null;
+            isApproved: boolean;
+            rating: number;
+            movieId: string;
+            comment: string;
+            tags: string[];
+            isSpoiler: boolean;
+            likes: number;
         })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        duration: string;
+        year: string;
+        rating: number;
+        isPublished: boolean;
         title: string;
         description: string;
         director: string;
         cast: string[];
-        year: string;
-        duration: string;
-        rating: number;
         genres: string[];
         posterUrl: string;
         backdropUrl: string;
         trailerUrl: string;
         streamingUrl: string | null;
         platform: string | null;
-        status: import("../../../generated/enums").ContentStatus;
         price: number;
-        isPublished: boolean;
         isTrending: boolean;
     }) | null>;
-    createMovieInDB: (movieData: Partial<Movie>) => Promise<Movie>;
-    updateMovieInDB: (id: string, payload: Partial<Movie>) => Promise<Movie>;
-    deleteMovieFromDB: (id: string) => Promise<Movie>;
+    getMovieGenresFromDB: () => Promise<{
+        name: string;
+        count: number;
+    }[]>;
+    createMovieInDB: (payload: any) => Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        duration: string;
+        year: string;
+        rating: number;
+        isPublished: boolean;
+        title: string;
+        description: string;
+        director: string;
+        cast: string[];
+        genres: string[];
+        posterUrl: string;
+        backdropUrl: string;
+        trailerUrl: string;
+        streamingUrl: string | null;
+        platform: string | null;
+        price: number;
+        isTrending: boolean;
+    }>;
+    updateMovieInDB: (id: string, payload: any) => Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        duration: string;
+        year: string;
+        rating: number;
+        isPublished: boolean;
+        title: string;
+        description: string;
+        director: string;
+        cast: string[];
+        genres: string[];
+        posterUrl: string;
+        backdropUrl: string;
+        trailerUrl: string;
+        streamingUrl: string | null;
+        platform: string | null;
+        price: number;
+        isTrending: boolean;
+    }>;
+    deleteMovieFromDB: (id: string) => Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        duration: string;
+        year: string;
+        rating: number;
+        isPublished: boolean;
+        title: string;
+        description: string;
+        director: string;
+        cast: string[];
+        genres: string[];
+        posterUrl: string;
+        backdropUrl: string;
+        trailerUrl: string;
+        streamingUrl: string | null;
+        platform: string | null;
+        price: number;
+        isTrending: boolean;
+    }>;
 };
 //# sourceMappingURL=movie.service.d.ts.map

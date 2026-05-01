@@ -1,21 +1,52 @@
 import { auth as betterAuth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
 import { catchAsync } from "../../utils/catchAsync.js";
+import { getContentStatus } from "../../utils/access.js";
+const getSessionUser = async (req) => {
+    const session = await betterAuth.api.getSession({
+        headers: req.headers,
+    });
+    if (!session?.user?.id) {
+        return null;
+    }
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            isBlocked: true,
+            image: true,
+            emailVerified: true,
+            createdAt: true,
+            updatedAt: true,
+            subscription: {
+                select: {
+                    status: true,
+                    endDate: true,
+                },
+            },
+        },
+    });
+    if (!user) {
+        return null;
+    }
+    const { subscription, ...userFields } = user;
+    return {
+        ...userFields,
+        contentStatus: getContentStatus(subscription),
+    };
+};
 export const auth = (...roles) => {
     return catchAsync(async (req, res, next) => {
-        // 1. Get the session
-        const session = await betterAuth.api.getSession({
-            headers: req.headers,
-        });
-        // 2. Validate session existence
-        if (!session || !session.user) {
+        const user = await getSessionUser(req);
+        if (!user) {
             return res.status(401).json({
                 success: false,
                 message: "Authentication failed. Please log in.",
             });
         }
-        // 3. Cast to your custom interface
-        const user = session.user;
-        // 4. Blocked check
         if (user.isBlocked) {
             return res.status(403).json({
                 success: false,
@@ -32,8 +63,16 @@ export const auth = (...roles) => {
                 });
             }
         }
-        // 6. Attach to Request object
         req.user = user;
+        next();
+    });
+};
+export const optionalAuth = () => {
+    return catchAsync(async (req, _res, next) => {
+        const user = await getSessionUser(req);
+        if (user && !user.isBlocked) {
+            req.user = user;
+        }
         next();
     });
 };

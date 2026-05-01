@@ -1,8 +1,11 @@
-import { MovieService } from "./movie.service.js";
 import { catchAsync } from "../../../utils/catchAsync.js";
 import { sendResponse } from "../../../utils/sendResponse.js";
+import { getMovieStatus, withMovieStatus } from "../../../utils/access.js";
+import { MovieService } from "./movie.service.js";
+import { PurchaseService } from "../purchase/purchase.service.js";
 const getAllMovies = catchAsync(async (req, res) => {
-    const result = await MovieService.getAllMoviesFromDB(req.query);
+    const userRole = req.user?.role;
+    const result = await MovieService.getAllMoviesFromDB(req.query, userRole);
     sendResponse(res, {
         httpStatusCode: 200,
         success: true,
@@ -11,75 +14,79 @@ const getAllMovies = catchAsync(async (req, res) => {
         data: result.data,
     });
 });
+const getMovieGenres = catchAsync(async (_req, res) => {
+    const result = await MovieService.getMovieGenresFromDB();
+    sendResponse(res, {
+        httpStatusCode: 200,
+        success: true,
+        message: "Genres fetched successfully",
+        data: result,
+    });
+});
 const getMovieById = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await MovieService.getSingleMovieFromDB(id);
-    if (!result) {
-        throw new Error("Movie not found");
+    const user = req.user;
+    const movie = await MovieService.getSingleMovieFromDB(id);
+    if (!movie) {
+        return sendResponse(res, {
+            httpStatusCode: 404,
+            success: false,
+            message: "Movie not found",
+            data: null,
+        });
+    }
+    let hasAccess = getMovieStatus(movie.price) === "FREE";
+    // Admin bypass
+    if (user?.role === "ADMIN") {
+        hasAccess = true;
+    }
+    // Normal user access check
+    else if (user?.id && !hasAccess) {
+        hasAccess = await PurchaseService.checkMovieAccess(user.id, user.role, id);
     }
     sendResponse(res, {
         httpStatusCode: 200,
         success: true,
-        message: "Movie details fetched successfully",
-        data: result,
+        message: "Movie fetched successfully",
+        data: withMovieStatus({
+            ...movie,
+            hasAccess,
+            streamingUrl: hasAccess ? movie.streamingUrl : null,
+        }),
     });
 });
-// const getMovieById = catchAsync(async (req: Request, res: Response) => {
-//     const { id } = req.params;
-//     const userId = req.user?.id; // Assuming you have auth middleware
-//     const movie = await MovieService.getSingleMovieFromDB(id);
-//     if (!movie) throw new Error("Movie not found");
-//     // Editorial Logic: Hide the streaming URL if it's Premium and user hasn't paid
-//     let hasAccess = false;
-//     if (movie.status === "FREE") {z
-//       hasAccess = true;
-//     } else if (userId) {
-//       hasAccess = await PurchaseService.checkMovieAccess(userId, movie.id);
-//     }
-//     const responseData = {
-//       ...movie,
-//       // If no access, we redact the streaming URL for security
-//       streamingUrl: hasAccess ? movie.streamingUrl : null,
-//       hasAccess, 
-//     };
-//     sendResponse(res, {
-//       httpStatusCode: 200,
-//       success: true,
-//       message: "Movie details fetched",
-//       data: responseData,
-//     });
-//   });
 const createMovie = catchAsync(async (req, res) => {
-    const result = await MovieService.createMovieInDB(req.body);
+    const movie = await MovieService.createMovieInDB(req.body);
     sendResponse(res, {
         httpStatusCode: 201,
         success: true,
         message: "Movie created successfully",
-        data: result,
+        data: movie,
     });
 });
 const updateMovie = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await MovieService.updateMovieInDB(id, req.body);
+    const updated = await MovieService.updateMovieInDB(id, req.body);
     sendResponse(res, {
         httpStatusCode: 200,
         success: true,
         message: "Movie updated successfully",
-        data: result,
+        data: updated,
     });
 });
 const deleteMovie = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await MovieService.deleteMovieFromDB(id);
+    const deleted = await MovieService.deleteMovieFromDB(id);
     sendResponse(res, {
         httpStatusCode: 200,
         success: true,
         message: "Movie deleted successfully",
-        data: result,
+        data: deleted,
     });
 });
 export const MovieController = {
     getAllMovies,
+    getMovieGenres,
     getMovieById,
     createMovie,
     updateMovie,

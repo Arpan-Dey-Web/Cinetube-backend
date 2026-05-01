@@ -6,6 +6,7 @@ export const updateMovieRating = async (movieId: string) => {
     where: {
       movieId: movieId,
       isApproved: true, // Only count verified reviews
+      parentId: null,
     },
     _avg: {
       rating: true,

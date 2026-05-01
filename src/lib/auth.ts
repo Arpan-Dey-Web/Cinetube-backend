@@ -22,7 +22,7 @@ export const auth = betterAuth({
     }
   },
 
-  baseURL: process.env.FRONTEND_URL,
+  baseURL: process.env.BETTER_AUTH_URL || `http://localhost:${process.env.PORT || 5000}`,
   trustedOrigins: [process.env.FRONTEND_URL!],
 
   // ========================== Email and Password ==========================
@@ -51,18 +51,18 @@ export const auth = betterAuth({
         name: "session_token", // Force this exact name
         attributes: {
           httpOnly: true,
-          secure: true,
-          sameSite: "none",
-          partitioned: true,
+          secure: process.env.NODE_ENV === "production" ? true : false,
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          partitioned: process.env.NODE_ENV === "production" ? true : false,
         },
       },
       state: {
-        name: "session_token", // Force this exact name
+        name: "state", // Better Auth state token
         attributes: {
           httpOnly: true,
-          secure: true,
-          sameSite: "none",
-          partitioned: true,
+          secure: process.env.NODE_ENV === "production" ? true : false,
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          partitioned: process.env.NODE_ENV === "production" ? true : false,
         },
       },
     },

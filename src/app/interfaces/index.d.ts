@@ -1,10 +1,11 @@
-import { ContentStatus, Role } from "../../generated/enums";
-
+import type { IRequestUser } from "../../types/types";
 
 declare global {
   namespace Express {
     interface Request {
-      user: IRequestUser;
+      user?: IRequestUser;
     }
   }
 }
+
+export {};

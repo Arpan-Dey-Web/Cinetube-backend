@@ -11,10 +11,8 @@ export const validateRequest = (schema: ZodSchema<any>) => {
       cookies: req.cookies,
     });
 
-    // req.body is usually safe to overwrite
     req.body = parsedData.body;
 
-    // Use Object.assign for query and params to avoid the "getter only" error
     if (parsedData.query) {
         Object.assign(req.query, parsedData.query);
     }

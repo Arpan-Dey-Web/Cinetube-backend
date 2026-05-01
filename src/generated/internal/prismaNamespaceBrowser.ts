@@ -57,6 +57,7 @@ export const ModelName = {
   ReviewLike: 'ReviewLike',
   Watchlist: 'Watchlist',
   Purchase: 'Purchase',
+  Subscription: 'Subscription',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'
@@ -83,8 +84,9 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
+  phone: 'phone',
+  address: 'address',
   role: 'role',
-  contentStatus: 'contentStatus',
   emailVerified: 'emailVerified',
   isBlocked: 'isBlocked',
   image: 'image',
@@ -110,7 +112,6 @@ export const MovieScalarFieldEnum = {
   trailerUrl: 'trailerUrl',
   streamingUrl: 'streamingUrl',
   platform: 'platform',
-  status: 'status',
   price: 'price',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -125,6 +126,7 @@ export const ReviewScalarFieldEnum = {
   id: 'id',
   rating: 'rating',
   comment: 'comment',
+  tags: 'tags',
   isSpoiler: 'isSpoiler',
   isApproved: 'isApproved',
   likes: 'likes',
@@ -150,7 +152,9 @@ export type ReviewLikeScalarFieldEnum = (typeof ReviewLikeScalarFieldEnum)[keyof
 export const WatchlistScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  movieId: 'movieId'
+  movieId: 'movieId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WatchlistScalarFieldEnum = (typeof WatchlistScalarFieldEnum)[keyof typeof WatchlistScalarFieldEnum]
@@ -163,10 +167,27 @@ export const PurchaseScalarFieldEnum = {
   userId: 'userId',
   movieId: 'movieId',
   amount: 'amount',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PurchaseScalarFieldEnum = (typeof PurchaseScalarFieldEnum)[keyof typeof PurchaseScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  status: 'status',
+  plan: 'plan',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

@@ -1,20 +1,23 @@
 import { Router } from "express";
-import { MovieController } from "./movie.controller";
-import { auth } from "../../middleware/auth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { MovieValidation } from "./movie.validation";
 import { Role } from "../../../enums/enum";
+import { auth, optionalAuth } from "../../middleware/auth";
+import { validateRequest } from "../../middleware/validateRequest";
+import { MovieController } from "./movie.controller";
+import { MovieValidation } from "./movie.validation";
 
 const movieRouter = Router();
 
-// Get All Movies Route
-movieRouter.get("/", MovieController.getAllMovies);
+movieRouter.get(
+  "/",
+  optionalAuth(),
+  validateRequest(MovieValidation.getAllMoviesQuerySchema),
+  MovieController.getAllMovies,
+);
 
+movieRouter.get("/genres", MovieController.getMovieGenres);
 
-// Get Movie by ID Route
-movieRouter.get("/:id", MovieController.getMovieById);
+movieRouter.get("/:id", optionalAuth(), MovieController.getMovieById);
 
-// Create Movie Route
 movieRouter.post(
   "/create-movie",
   auth(Role.Admin),
@@ -22,7 +25,6 @@ movieRouter.post(
   MovieController.createMovie,
 );
 
-// Update Movie Route
 movieRouter.put(
   "/update-movie/:id",
   auth(Role.Admin),
@@ -30,7 +32,6 @@ movieRouter.put(
   MovieController.updateMovie,
 );
 
-// Delete Movie Route
 movieRouter.delete("/:id", auth(Role.Admin), MovieController.deleteMovie);
 
 export default movieRouter;

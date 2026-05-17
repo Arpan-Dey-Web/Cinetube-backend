@@ -1,3 +1,7 @@
+import { Prisma } from "../../../generated/client";
+type MovieWritePayload = Prisma.MovieCreateInput & {
+    status?: "FREE" | "PREMIUM";
+};
 export declare const MovieService: {
     getAllMoviesFromDB: (query: Record<string, unknown>, userRole?: string) => Promise<{
         meta: {
@@ -76,7 +80,7 @@ export declare const MovieService: {
         name: string;
         count: number;
     }[]>;
-    createMovieInDB: (payload: any) => Promise<{
+    createMovieInDB: (payload: MovieWritePayload) => Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -97,7 +101,7 @@ export declare const MovieService: {
         price: number;
         isTrending: boolean;
     }>;
-    updateMovieInDB: (id: string, payload: any) => Promise<{
+    updateMovieInDB: (id: string, payload: Prisma.MovieUpdateInput) => Promise<{
         id: string;
         createdAt: Date;
         updatedAt: Date;
@@ -140,4 +144,5 @@ export declare const MovieService: {
         isTrending: boolean;
     }>;
 };
+export {};
 //# sourceMappingURL=movie.service.d.ts.map

@@ -19,13 +19,27 @@ movieRouter.get("/genres", MovieController.getMovieGenres);
 movieRouter.get("/:id", optionalAuth(), MovieController.getMovieById);
 
 movieRouter.post(
+  "/",
+  auth(Role.Admin),
+  validateRequest(MovieValidation.createMovieSchema),
+  MovieController.createMovie,
+);
+
+movieRouter.patch(
+  "/:id",
+  auth(Role.Admin),
+  validateRequest(MovieValidation.updateMovieSchema),
+  MovieController.updateMovie,
+);
+
+movieRouter.post(
   "/create-movie",
   auth(Role.Admin),
   validateRequest(MovieValidation.createMovieSchema),
   MovieController.createMovie,
 );
 
-movieRouter.put(
+movieRouter.patch(
   "/update-movie/:id",
   auth(Role.Admin),
   validateRequest(MovieValidation.updateMovieSchema),

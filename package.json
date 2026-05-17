@@ -1,5 +1,5 @@
 {
-  "name": "a5-prisma",
+  "name": "cinetube-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "build": "prisma generate && tsc && node scripts/fix-imports.js",
     "build:tsup": "tsup",
     "start": "node dist/server.js",
-    "lint": "eslint ./src/**/*",
+    "lint": "eslint \"src/**/*.ts\"",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
     "postinstall": "prisma generate"
@@ -23,6 +23,9 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.4.0",
     "@types/pg": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "eslint": "^10.3.0",
     "prisma": "^7.4.2",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",

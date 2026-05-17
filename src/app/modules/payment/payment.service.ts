@@ -13,7 +13,7 @@ if (!apiKey) {
 
 // Only initialize once using the verified apiKey
 const stripe = new Stripe(apiKey as string, {
-  apiVersion: "2025-01-27.acacia" as any,
+  apiVersion: "2026-03-25.dahlia",
 });
 
 type PremiumPlanCode = "MONTHLY" | "ANNUAL";

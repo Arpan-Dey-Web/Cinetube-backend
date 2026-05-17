@@ -5,8 +5,37 @@ const getAllMoviesFromDB = async (query, userRole) => {
     const limit = Number(query.limit || 10);
     const skip = (page - 1) * limit;
     const where = {};
+    const search = String(query.search || query.searchTerm || "").trim();
+    const filter = String(query.filter || "");
+    const sortBy = String(query.sortBy || "");
+    const sortOrder = query.sortOrder === "asc" ? "asc" : "desc";
     if (userRole !== "ADMIN") {
         where.isPublished = true;
+    }
+    if (search) {
+        where.OR = [
+            { title: { contains: search, mode: "insensitive" } },
+            { description: { contains: search, mode: "insensitive" } },
+            { director: { contains: search, mode: "insensitive" } },
+        ];
+    }
+    if (query.genres) {
+        const genres = Array.isArray(query.genres)
+            ? query.genres.map(String)
+            : String(query.genres).split(",");
+        where.genres = { hasSome: genres.map((genre) => genre.trim()).filter(Boolean) };
+    }
+    if (query.platform) {
+        where.platform = String(query.platform);
+    }
+    if (query.year) {
+        where.year = String(query.year);
+    }
+    if (query.minRating || query.maxRating) {
+        where.rating = {
+            ...(query.minRating ? { gte: Number(query.minRating) } : {}),
+            ...(query.maxRating ? { lte: Number(query.maxRating) } : {}),
+        };
     }
     if (query.status === "FREE") {
         where.price = { lte: 0 };
@@ -14,12 +43,37 @@ const getAllMoviesFromDB = async (query, userRole) => {
     if (query.status === "PREMIUM") {
         where.price = { gt: 0 };
     }
+    if (query.isTrending === true || query.trending === true || filter === "trending") {
+        where.isTrending = true;
+    }
+    if (query.isPublished !== undefined && userRole === "ADMIN") {
+        where.isPublished = Boolean(query.isPublished);
+    }
+    const orderBy = [];
+    if (query["top-rated"] === true || filter === "top-rated" || sortBy === "highestRated") {
+        orderBy.push({ rating: "desc" });
+    }
+    else if (query["newly-added"] === true || filter === "newly-added" || sortBy === "latest") {
+        orderBy.push({ createdAt: "desc" });
+    }
+    else if (sortBy === "rating") {
+        orderBy.push({ rating: sortOrder });
+    }
+    else if (["createdAt", "price", "title", "year"].includes(sortBy)) {
+        orderBy.push({ [sortBy]: sortOrder });
+    }
+    else {
+        orderBy.push({ createdAt: "desc" });
+    }
+    if (query.featured === true || filter === "featured") {
+        orderBy.unshift({ isTrending: "desc" }, { rating: "desc" });
+    }
     const [data, total] = await Promise.all([
         prisma.movie.findMany({
             where,
             skip,
             take: limit,
-            orderBy: { createdAt: "desc" },
+            orderBy,
         }),
         prisma.movie.count({ where }),
     ]);
@@ -70,9 +124,10 @@ const getMovieGenresFromDB = async () => {
     }));
 };
 const createMovieInDB = async (payload) => {
+    const { status: _status, ...movieData } = payload;
     return prisma.movie.create({
         data: {
-            ...payload,
+            ...movieData,
             price: Number(payload.price || 0),
         },
     });

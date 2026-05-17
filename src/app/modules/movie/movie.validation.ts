@@ -42,6 +42,7 @@ const updateMovieSchema = z.object({
 
 const getAllMoviesQuerySchema = z.object({
   query: z.object({
+    search: z.string().optional(),
     searchTerm: z.string().optional(),
     genres: z.union([z.string(), z.array(z.string())]).optional(),
     platform: z.string().optional(),
@@ -66,6 +67,10 @@ const getAllMoviesQuerySchema = z.object({
       .optional(),
     sortOrder: z.enum(["asc", "desc"]).optional(),
     filter: z.enum(["featured", "trending", "newly-added", "top-rated"]).optional(),
+    featured: booleanish.optional(),
+    trending: booleanish.optional(),
+    "newly-added": booleanish.optional(),
+    "top-rated": booleanish.optional(),
     isTrending: booleanish.optional(),
     isPublished: booleanish.optional(),
   }),
